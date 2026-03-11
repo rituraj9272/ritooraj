@@ -10,6 +10,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <span class="terminal-btn close"></span>
+                    <span class="terminal-btn minimize"></span>
+                    <span class="terminal-btn maximize"></span>
+                </div>
+                <div class="terminal-title">rituraj@devops: ~/portfolio</div>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line"><span class="prompt">$</span> npm run portfolio</div>
+                <div class="terminal-line loading-line" data-delay="400"></div>
+                <div class="terminal-line loading-line" data-delay="1200"><span class="text-gray">&gt; Loading development environment...</span></div>
+                <div class="terminal-line loading-line" data-delay="1600"></div>
+                <div class="terminal-line loading-line" data-delay="2000"><span class="text-success">✓</span> Initializing modules</div>
+                <div class="terminal-line loading-line" data-delay="2400"><span class="text-success">✓</span> Loading dependencies</div>
+                <div class="terminal-line loading-line" data-delay="2800"><span class="text-success">✓</span> Compiling components</div>
+                <div class="terminal-line loading-line" data-delay="3200"><span class="text-success">✓</span> Configuring DevOps tools</div>
+                <div class="terminal-line loading-line" data-delay="3600"><span class="text-success">✓</span> Building..</div>
+                <div class="terminal-line loading-line" data-delay="4000"></div>
+                <div class="terminal-line loading-line" data-delay="4200">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="terminalProgress"></div>
+                    </div>
+                    <span class="progress-text" id="progressText">0%</span>
+                </div>
+                <div class="terminal-line loading-line" data-delay="4600"></div>
+                <div class="terminal-line loading-line final-line" data-delay="5000"><span class="text-primary">✓ Portfolio loaded successfully!</span></div>
+                <div class="terminal-line loading-line" data-delay="5200"><span class="text-gray">Starting application...</span></div>
+                <div class="terminal-cursor">_</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
+
     <!-- Animated Background -->
     <div class="background-animation">
         <canvas id="pipelineCanvas"></canvas>
@@ -19,7 +59,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <span class="terminal-prompt">$</span> ritooraj@devops
+                <span class="terminal-prompt">$</span> rituraj@infrastructure
             </div>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="#home">Home</a></li>
@@ -31,6 +71,11 @@
                 <li><a href="#certifications">Certifications</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
             <div class="hamburger" id="hamburger">
                 <span></span>
                 <span></span>
@@ -44,7 +89,7 @@
         <div class="hero-split-container">
             <div class="hero-left">
                 <div class="hero-text-content">
-                    <p class="hero-greeting">HELLO, I AM</p>
+                    <p class="hero-greeting">HELLO,  I  AM</p>
                     <h1 class="hero-name">
                         Rituraj Singh
                     </h1>
@@ -96,29 +141,32 @@
   "name": "Rituraj Singh",
   "role": "DevOps Engineer",
   "experience": "3+ years",
-  "company": "National e-Governance Division (MeitY)",
-  "location": "India 🇮🇳",
+  "organisation": "National e-Governance Division (NeGD), MeitY – Government of India",
+  "location": "New Delhi, India 🇮🇳",
   
-  "expertise": [
-    "CI/CD automation",
-    "Containerized infrastructure",
-    "Cloud security",
-    "High availability distributed systems"
+  "core_competencies": [
+    "Cloud-Native Architecture (AWS)",
+    "CI/CD Pipeline Automation",
+    "Container Orchestration (ECS, K8s)",
+    "Infrastructure as Code",
+    "Monitoring & Observability",
   ],
   
-  "current_projects": [
-    "DigiLocker 2.0",
-    "APISetu",
-    "EPFO"
+  "national_platforms": [
+    "DigiLocker 2.0 - 200M+ users",
+    "APISetu - API Gateway Platform",
+    "EPFO - Employee Provident Fund"
   ],
   
-  "motto": "Automate everything that moves 🚀"
+  "philosophy": "If it’s manual, automate it. If it breaks, monitor it. If it works, scale it. 🚀"
 }</code></pre>
                     </div>
                     <p class="about-description">
-                        DevOps Engineer with <strong>3+ years of experience</strong> designing, deploying, and operating 
-                        scalable cloud-native systems on AWS. Currently supporting national scale digital platforms 
-                        serving millions of users daily.
+                        DevOps Engineer with <strong>3+ years of hands-on experience</strong> architecting, deploying, 
+                        and optimizing enterprise-grade cloud infrastructure on AWS. Passionate about building resilient, 
+                        secure, and scalable systems that power national digital transformation initiatives. 
+                        <strong>Currently managing infrastructure for platforms serving 200M+ users</strong> across 
+                        DigiLocker 2.0, APISetu, and EPFO ecosystems.
                     </p>
                     <div class="about-highlights">
                         <div class="highlight-item">
@@ -154,6 +202,7 @@
             <h2 class="section-title">
                 <span class="terminal-prompt">$</span> ls -la /skills/
             </h2>
+
             <div class="skills-grid">
                 <!-- Cloud -->
                 <div class="skill-category">
@@ -236,6 +285,9 @@
                         <span class="tag">Windows Server</span>
                         <span class="tag">ServiceNow</span>
                         <span class="tag">Active Directory</span>
+                        <span class="tag">Azure AD</span>
+                        <span class="tag">Azure ARM</span>
+                        <span class="tag">Intune</span>
                     </div>
                 </div>
 
@@ -260,9 +312,19 @@
             <h2 class="section-title">
                 <span class="terminal-prompt">$</span> git log --projects
             </h2>
+            
+            <!-- Project Filters -->
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="aws">AWS</button>
+                <button class="filter-btn" data-filter="docker">Docker</button>
+                <button class="filter-btn" data-filter="python">Python</button>
+                <button class="filter-btn" data-filter="monitoring">Monitoring</button>
+            </div>
+            
             <div class="projects-grid">
                 <!-- Project 1: ALB Observability -->
-                <div class="project-card">
+                <div class="project-card" data-category="aws python monitoring">
                     <div class="project-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
@@ -290,7 +352,7 @@
                 </div>
 
                 <!-- Project 2: RabbitMQ Monitoring -->
-                <div class="project-card">
+                <div class="project-card" data-category="docker monitoring python">
                     <div class="project-icon">
                         <i class="fas fa-server"></i>
                     </div>
@@ -318,7 +380,7 @@
                 </div>
 
                 <!-- Project 3: Assistant AI -->
-                <div class="project-card">
+                <div class="project-card" data-category="python">
                     <div class="project-icon">
                         <i class="fas fa-robot"></i>
                     </div>
@@ -339,28 +401,7 @@
                     </div>
                 </div>
 
-                <!-- Project 4: WAR Web Project -->
-                <div class="project-card">
-                    <div class="project-icon">
-                        <i class="fas fa-file-archive"></i>
-                    </div>
-                    <h3>Java WAR Deployment Pipeline</h3>
-                    <p class="project-description">
-                        Complete CI/CD pipeline for Java WAR applications. Demonstrates Maven builds, 
-                        automated testing, and containerized deployments.
-                    </p>
-                    <div class="project-tags">
-                        <span>Java</span>
-                        <span>Maven</span>
-                        <span>Jenkins</span>
-                        <span>Docker</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/ritooraj01/war-web-project" target="_blank" class="project-link">
-                            <i class="fab fa-github"></i> View Code
-                        </a>
-                    </div>
-                </div>
+
             </div>
 
             <!-- GitHub Stats -->
@@ -436,6 +477,62 @@
                     <div class="pipeline-step success">
                         <i class="fas fa-rocket"></i>
                         <span>Production</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GitLab CI/CD with ArgoCD -->
+            <div class="architecture-diagram">
+                <h3>GitLab CI/CD with ArgoCD (GitOps)</h3>
+                <div class="pipeline">
+                    <div class="pipeline-step">
+                        <i class="fab fa-gitlab"></i>
+                        <span>GitLab Repo</span>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <i class="fas fa-cogs"></i>
+                        <span>GitLab CI/CD</span>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Security Scans</span>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <i class="fab fa-docker"></i>
+                        <span>Docker Build</span>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <i class="fas fa-box"></i>
+                        <span>Container Registry</span>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <i class="fas fa-code-branch"></i>
+                        <span>GitOps Repo</span>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>ArgoCD</span>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <i class="fas fa-dharmachakra"></i>
+                        <span>Kubernetes</span>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step success">
+                        <i class="fas fa-rocket"></i>
+                        <span>Production</span>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <i class="fas fa-chart-area"></i>
+                        <span>Prometheus+Grafana</span>
                     </div>
                 </div>
             </div>
@@ -533,7 +630,7 @@
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <div class="timeline-date">2022 - Present</div>
+                        <div class="timeline-date">Jun 2025 - Present</div>
                         <h3>DevOps Engineer</h3>
                         <h4>National e-Governance Division (MeitY)</h4>
                         <div class="timeline-description">
@@ -569,7 +666,7 @@
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <div class="timeline-date">2021 - 2022</div>
+                        <div class="timeline-date">Aug 2024 - June 2025</div>
                         <h3>Cloud Support Engineer</h3>
                         <h4>Sagenext Infotech</h4>
                         <div class="timeline-description">
@@ -593,7 +690,7 @@
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <div class="timeline-date">2020 - 2021</div>
+                        <div class="timeline-date">Jan 2023 - Aug 2024</div>
                         <h3>DevOps Support Engineer</h3>
                         <h4>HCLTech</h4>
                         <div class="timeline-description">
@@ -767,8 +864,13 @@
             </h2>
             <div class="contact-content">
                 <div class="contact-info">
-                    <h3>Let's Connect!</h3>
-                    <p>Interested in collaborating or discussing DevOps? Feel free to reach out!</p>
+                    <div class="contact-intro">
+                        <div class="ping-animation">
+                            <i class="fas fa-broadcast-tower"></i>
+                        </div>
+                        <h3>Let's Build Something Amazing Together!</h3>
+                        <p class="contact-tagline">Open to discussing DevOps strategies, cloud architecture, or potential collaborations. Whether you're looking to optimize your infrastructure or explore new automation opportunities, I'd love to connect!</p>
+                    </div>
                     <div class="contact-methods">
                         <a href="mailto:singh.ritooraj@gmail.com" class="contact-method">
                             <i class="fas fa-envelope"></i>
@@ -814,8 +916,8 @@
                             <label for="message">Message</label>
                             <textarea id="message" name="message" rows="5" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Send Message
+                        <button type="submit" class="btn btn-primary btn-compact">
+                            <i class="fas fa-paper-plane"></i> Send
                         </button>
                     </form>
                 </div>
@@ -843,11 +945,32 @@
                     </a>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>Made with HTML, CSS, and JavaScript | Deployed with DevOps best practices 🚀</p>
-            </div>
         </div>
     </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" id="mobileBottomNav">
+        <a href="#home" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#skills" class="nav-item">
+            <i class="fas fa-code"></i>
+            <span>Skills</span>
+        </a>
+        <a href="#projects" class="nav-item">
+            <i class="fas fa-folder"></i>
+            <span>Projects</span>
+        </a>
+        <a href="#experience" class="nav-item">
+            <i class="fas fa-briefcase"></i>
+            <span>Work</span>
+        </a>
+        <a href="#contact" class="nav-item">
+            <i class="fas fa-envelope"></i>
+            <span>Contact</span>
+        </a>
+    </nav>
 
     <script src="script.js"></script>
 </body>

@@ -344,8 +344,8 @@ if (statsGrid) {
 // ===========================
 // Project Cards Stagger Animation
 // ===========================
-const projectCards = document.querySelectorAll('.project-card');
-projectCards.forEach((card, index) => {
+const projectCardsForAnimation = document.querySelectorAll('.project-card');
+projectCardsForAnimation.forEach((card, index) => {
     const cardObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -570,6 +570,331 @@ if ('performance' in window) {
         console.log(`⚡ DOM Content Loaded: ${(perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart).toFixed(2)}ms`);
         console.log(`🚀 Total Load Time: ${(perfData.loadEventEnd - perfData.loadEventStart).toFixed(2)}ms`);
     });
+}
+
+// ===========================
+// 🌗 Dark/Light Mode Toggle
+// ===========================
+const themeToggle = document.querySelector('.theme-toggle');
+const htmlElement = document.documentElement;
+
+// Check for saved theme preference or default to 'dark'
+const currentTheme = localStorage.getItem('theme') || 'dark';
+htmlElement.setAttribute('data-theme', currentTheme);
+updateThemeIcon(currentTheme);
+
+themeToggle.addEventListener('click', () => {
+    const currentTheme = htmlElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    htmlElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+    
+    // Add rotation animation
+    themeToggle.style.transform = 'rotate(360deg)';
+    setTimeout(() => {
+        themeToggle.style.transform = 'rotate(0deg)';
+    }, 500);
+});
+
+function updateThemeIcon(theme) {
+    const icon = themeToggle.querySelector('i');
+    if (theme === 'dark') {
+        icon.className = 'fas fa-sun';
+    } else {
+        icon.className = 'fas fa-moon';
+    }
+}
+
+// ===========================
+// 🎯 Project Filtering System
+// ===========================
+const filterButtons = document.querySelectorAll('.filter-btn');
+const allProjectCards = document.querySelectorAll('.project-card');
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // Update active button
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+        const filterValue = button.getAttribute('data-filter');
+        
+        allProjectCards.forEach(card => {
+            const categories = card.getAttribute('data-category').toLowerCase();
+            
+            if (filterValue === 'all' || categories.includes(filterValue.toLowerCase())) {
+                card.style.display = 'block';
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 10);
+            } else {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.display = 'none';
+                }, 300);
+            }
+        });
+    });
+});
+
+// ===========================
+// 🖱️ Custom Cursor Effects
+// ===========================
+const cursor = document.querySelector('.cursor');
+const cursorFollower = document.querySelector('.cursor-follower');
+
+let mouseX = 0;
+let mouseY = 0;
+let cursorX = 0;
+let cursorY = 0;
+let followerX = 0;
+let followerY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateCursor() {
+    // Main cursor follows immediately
+    cursorX += (mouseX - cursorX) * 0.9;
+    cursorY += (mouseY - cursorY) * 0.9;
+    cursor.style.left = cursorX + 'px';
+    cursor.style.top = cursorY + 'px';
+    
+    // Follower has a delay
+    followerX += (mouseX - followerX) * 0.1;
+    followerY += (mouseY - followerY) * 0.1;
+    cursorFollower.style.left = followerX + 'px';
+    cursorFollower.style.top = followerY + 'px';
+    
+    requestAnimationFrame(animateCursor);
+}
+
+// Only run cursor effects on desktop
+if (window.innerWidth > 768) {
+    animateCursor();
+}
+
+// Add cursor interactions
+const interactiveElements = document.querySelectorAll('a, button, .project-card, .filter-btn');
+interactiveElements.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'scale(2)';
+        cursorFollower.style.transform = 'scale(1.5)';
+    });
+    
+    el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'scale(1)';
+        cursorFollower.style.transform = 'scale(1)';
+    });
+});
+
+// ===========================
+// ⏳ Terminal Loading Screen Animation
+// ===========================
+window.addEventListener('load', () => {
+    const loadingScreen = document.querySelector('.loading-screen');
+    const terminalLines = document.querySelectorAll('.loading-line');
+    const progressBar = document.getElementById('terminalProgress');
+    const progressText = document.getElementById('progressText');
+    const cursor = document.querySelector('.terminal-cursor');
+    
+    // Show first line immediately
+    document.querySelector('.terminal-line:first-child').classList.add('visible');
+    
+    // Animate terminal lines sequentially
+    terminalLines.forEach((line, index) => {
+        const delay = parseInt(line.dataset.delay) || 0;
+        setTimeout(() => {
+            line.classList.add('visible');
+            
+            // Start progress bar animation when it appears
+            if (line.querySelector('.progress-bar-container')) {
+                animateProgressBar();
+            }
+        }, delay);
+    });
+    
+    // Progress bar animation
+    function animateProgressBar() {
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 8 + 2;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                
+                // Show cursor and hide loading screen
+                setTimeout(() => {
+                    cursor.classList.add('visible');
+                    setTimeout(() => {
+                        loadingScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 500);
+                    }, 800);
+                }, 200);
+            }
+            
+            progressBar.style.width = progress + '%';
+            progressText.textContent = Math.floor(progress) + '%';
+        }, 100);
+    }
+});
+
+// ===========================
+// 📊 Skill Progress Bar Animation
+// ===========================
+const skillProgressBars = document.querySelectorAll('.skill-progress-fill');
+const skillPercentages = document.querySelectorAll('.skill-percentage');
+
+const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const progressBar = entry.target;
+            const targetProgress = progressBar.getAttribute('data-progress');
+            const percentage = progressBar.parentElement.parentElement.querySelector('.skill-percentage');
+            
+            // Animate progress bar
+            setTimeout(() => {
+                progressBar.style.width = targetProgress + '%';
+            }, 100);
+            
+            // Animate percentage counter
+            let currentProgress = 0;
+            const interval = setInterval(() => {
+                if (currentProgress >= targetProgress) {
+                    clearInterval(interval);
+                    percentage.textContent = targetProgress + '%';
+                } else {
+                    currentProgress += 1;
+                    percentage.textContent = currentProgress + '%';
+                }
+            }, 20);
+            
+            skillObserver.unobserve(progressBar);
+        }
+    });
+}, { threshold: 0.5 });
+
+skillProgressBars.forEach(bar => skillObserver.observe(bar));
+
+// ===========================
+// 💻 Interactive Terminal Functionality
+// ===========================
+const terminalInput = document.getElementById('terminal-input');
+const terminalOutput = document.getElementById('terminal-output');
+
+const commands = {
+    help: `Available commands:
+  - <span style="color: #00D9FF">help</span> : Show this help message
+  - <span style="color: #00D9FF">about</span> : About Rituraj Singh
+  - <span style="color: #00D9FF">skills</span> : List technical skills
+  - <span style="color: #00D9FF">projects</span> : Show recent projects
+  - <span style="color: #00D9FF">contact</span> : Get contact information
+  - <span style="color: #00D9FF">whoami</span> : Who am I?
+  - <span style="color: #00D9FF">clear</span> : Clear terminal`,
+    
+    about: `<span style="color: #00FFA3">Rituraj Singh - DevOps Engineer</span>
+  
+  Passionate about automating infrastructure and building scalable systems.
+  Currently working at GeeksforGeeks, managing AWS cloud infrastructure,
+  CI/CD pipelines, and ensuring 99.9% uptime for millions of users.`,
+    
+    skills: `<span style="color: #00FFA3">Core Skills:</span>
+  ☁️  AWS (ECS, EC2, S3, CloudWatch, Lambda)
+  🐳  Docker & Kubernetes
+  🔧  CI/CD (Jenkins, GitHub Actions)
+  📊  Monitoring (CloudWatch, Nagios, Uptime Kuma)
+  🐍  Python & Shell Scripting
+  🔒  DevSecOps & Security`,
+    
+    projects: `<span style="color: #00FFA3">Featured Projects:</span>
+  1. 🚀 CI/CD Pipeline Automation - Jenkins + AWS ECS
+  2. 📊 Real-time Observability Dashboard - CloudWatch + Python
+  3. 🔒 Security Automation Suite - WAF + CloudWatch
+  4. 🌐 Multi-environment Infrastructure - AWS + Terraform`,
+    
+    contact: `<span style="color: #00FFA3">Contact Information:</span>
+  📧 Email: singh.ritooraj@gmail.com
+  💼 LinkedIn: linkedin.com/in/rituraj-singh
+  🐙 GitHub: github.com/ritooraj01
+  📍 Location: New Delhi, India`,
+    
+    whoami: `<span style="color: #00D9FF; font-size: 1.2em">DevOps Engineer | Cloud Enthusiast | Automation Advocate</span>
+  
+  "I turn coffee into infrastructure automation" ☕️ → 🚀`,
+    
+    clear: 'CLEAR_TERMINAL'
+};
+
+if (terminalInput) {
+    terminalInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const command = terminalInput.value.trim().toLowerCase();
+            
+            // Display command
+            const commandLine = document.createElement('div');
+            commandLine.innerHTML = `<span style="color: #00D9FF">visitor@portfolio:~$</span> ${command}`;
+            terminalOutput.appendChild(commandLine);
+            
+            // Execute command
+            if (command === 'clear') {
+                terminalOutput.innerHTML = '';
+            } else if (commands[command]) {
+                const output = document.createElement('div');
+                output.innerHTML = commands[command];
+                output.style.marginBottom = '1rem';
+                terminalOutput.appendChild(output);
+            } else if (command) {
+                const error = document.createElement('div');
+                error.innerHTML = `<span style="color: #FF006E">Command not found: ${command}</span>. Type <span style="color: #00D9FF">help</span> for available commands.`;
+                error.style.marginBottom = '1rem';
+                terminalOutput.appendChild(error);
+            }
+            
+            // Clear input
+            terminalInput.value = '';
+            
+            // Scroll to bottom
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+    });
+}
+
+// ===========================
+// 📱 Mobile Bottom Navigation Active State
+// ===========================
+const mobileNavItems = document.querySelectorAll('.mobile-bottom-nav .nav-item');
+const sections = document.querySelectorAll('.section');
+
+function updateMobileNav() {
+    let currentSection = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        if (window.pageYOffset >= sectionTop - 200) {
+            currentSection = section.getAttribute('id');
+        }
+    });
+    
+    mobileNavItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('href') === `#${currentSection}`) {
+            item.classList.add('active');
+        }
+    });
+}
+
+if (window.innerWidth <= 768) {
+    window.addEventListener('scroll', updateMobileNav);
 }
 
 // ===========================
