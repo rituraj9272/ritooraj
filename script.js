@@ -165,24 +165,10 @@ function animateCanvas() {
 animateCanvas();
 
 // ===========================
-// Typing Effect for Hero Subtitle
+// Typing Effect Disabled (not needed for new layout)
 // ===========================
-const typingText = document.querySelector('.typing-text');
-if (typingText) {
-    const textContent = typingText.textContent;
-    typingText.textContent = '';
-    let charIndex = 0;
-
-    function type() {
-        if (charIndex < textContent.length) {
-            typingText.textContent += textContent.charAt(charIndex);
-            charIndex++;
-            setTimeout(type, 100);
-        }
-    }
-
-    setTimeout(type, 500);
-}
+// const typingText = document.querySelector('.typing-text');
+// Disabled as we now use static text in split-screen layout
 
 // ===========================
 // Contact Form Handling
@@ -225,16 +211,16 @@ document.querySelectorAll('.tag').forEach(tag => {
 });
 
 // ===========================
-// Parallax Effect for Hero Section
+// Parallax Effect (Disabled for split-screen hero)
 // ===========================
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-        hero.style.opacity = 1 - scrolled / 700;
-    }
-});
+// window.addEventListener('scroll', () => {
+//     const scrolled = window.pageYOffset;
+//     const hero = document.querySelector('.hero');
+//     if (hero) {
+//         hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+//         hero.style.opacity = 1 - scrolled / 700;
+//     }
+// });
 
 // ===========================
 // Pipeline Animation in Architecture Section
