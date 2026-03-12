@@ -727,7 +727,7 @@ interactiveElements.forEach(el => {
 // ===========================
 // ⏳ Terminal Loading Screen Animation
 // ===========================
-window.addEventListener('load', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const loadingScreen = document.querySelector('.loading-screen');
     const terminalLines = document.querySelectorAll('.loading-line');
     const progressBar = document.getElementById('terminalProgress');
@@ -735,7 +735,10 @@ window.addEventListener('load', () => {
     const cursor = document.querySelector('.terminal-cursor');
     
     // Show first line immediately
-    document.querySelector('.terminal-line:first-child').classList.add('visible');
+    const firstLine = document.querySelector('.terminal-line:first-child');
+    if (firstLine) firstLine.classList.add('visible');
+    
+    let progressBarStarted = false;
     
     // Animate terminal lines sequentially
     terminalLines.forEach((line, index) => {
@@ -744,7 +747,8 @@ window.addEventListener('load', () => {
             line.classList.add('visible');
             
             // Start progress bar animation when it appears
-            if (line.querySelector('.progress-bar-container')) {
+            if (!progressBarStarted && line.querySelector('.progress-bar-container')) {
+                progressBarStarted = true;
                 animateProgressBar();
             }
         }, delay);
@@ -761,20 +765,34 @@ window.addEventListener('load', () => {
                 
                 // Show cursor and hide loading screen
                 setTimeout(() => {
-                    cursor.classList.add('visible');
+                    if (cursor) cursor.classList.add('visible');
                     setTimeout(() => {
-                        loadingScreen.style.opacity = '0';
-                        setTimeout(() => {
-                            loadingScreen.style.display = 'none';
-                        }, 500);
+                        if (loadingScreen) {
+                            loadingScreen.style.opacity = '0';
+                            setTimeout(() => {
+                                loadingScreen.style.display = 'none';
+                                document.body.style.overflow = 'auto'; // Re-enable scrolling
+                            }, 500);
+                        }
                     }, 800);
                 }, 200);
             }
             
-            progressBar.style.width = progress + '%';
-            progressText.textContent = Math.floor(progress) + '%';
+            if (progressBar) progressBar.style.width = progress + '%';
+            if (progressText) progressText.textContent = Math.floor(progress) + '%';
         }, 100);
     }
+    
+    // Fallback: Force hide loading screen after 8 seconds
+    setTimeout(() => {
+        if (loadingScreen && loadingScreen.style.display !== 'none') {
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 500);
+        }
+    }, 8000);
 });
 
 // ===========================
