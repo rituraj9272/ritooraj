@@ -38,12 +38,24 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ===========================
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    
     if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(10, 14, 26, 0.98)';
-        navbar.style.boxShadow = '0 4px 16px rgba(0, 217, 255, 0.1)';
+        if (currentTheme === 'light') {
+            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            navbar.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.1)';
+        } else {
+            navbar.style.background = 'rgba(10, 14, 26, 0.98)';
+            navbar.style.boxShadow = '0 4px 16px rgba(0, 217, 255, 0.1)';
+        }
     } else {
-        navbar.style.background = 'rgba(10, 14, 26, 0.95)';
-        navbar.style.boxShadow = 'none';
+        if (currentTheme === 'light') {
+            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            navbar.style.boxShadow = 'none';
+        } else {
+            navbar.style.background = 'rgba(10, 14, 26, 0.95)';
+            navbar.style.boxShadow = 'none';
+        }
     }
 });
 
@@ -578,25 +590,19 @@ if ('performance' in window) {
 const themeToggle = document.querySelector('.theme-toggle');
 const htmlElement = document.documentElement;
 
-// Check for saved theme preference or default to 'dark'
-const currentTheme = localStorage.getItem('theme') || 'dark';
-htmlElement.setAttribute('data-theme', currentTheme);
-updateThemeIcon(currentTheme);
-
-themeToggle.addEventListener('click', () => {
-    const currentTheme = htmlElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+// Function to update navbar colors based on theme
+function updateNavbarColors(theme) {
+    const navbar = document.querySelector('.navbar');
+    const isScrolled = window.scrollY > 100;
     
-    htmlElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateThemeIcon(newTheme);
-    
-    // Add rotation animation
-    themeToggle.style.transform = 'rotate(360deg)';
-    setTimeout(() => {
-        themeToggle.style.transform = 'rotate(0deg)';
-    }, 500);
-});
+    if (theme === 'light') {
+        navbar.style.background = isScrolled ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)';
+        navbar.style.boxShadow = isScrolled ? '0 4px 16px rgba(0, 0, 0, 0.1)' : 'none';
+    } else {
+        navbar.style.background = isScrolled ? 'rgba(10, 14, 26, 0.98)' : 'rgba(10, 14, 26, 0.95)';
+        navbar.style.boxShadow = isScrolled ? '0 4px 16px rgba(0, 217, 255, 0.1)' : 'none';
+    }
+}
 
 function updateThemeIcon(theme) {
     const icon = themeToggle.querySelector('i');
@@ -606,6 +612,30 @@ function updateThemeIcon(theme) {
         icon.className = 'fas fa-moon';
     }
 }
+
+// Check for saved theme preference or default to 'dark'
+const currentTheme = localStorage.getItem('theme') || 'dark';
+htmlElement.setAttribute('data-theme', currentTheme);
+updateThemeIcon(currentTheme);
+updateNavbarColors(currentTheme);
+
+themeToggle.addEventListener('click', () => {
+    const currentTheme = htmlElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    htmlElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+    
+    // Update navbar colors based on new theme
+    updateNavbarColors(newTheme);
+    
+    // Add rotation animation
+    themeToggle.style.transform = 'rotate(360deg)';
+    setTimeout(() => {
+        themeToggle.style.transform = 'rotate(0deg)';
+    }, 500);
+});
 
 // ===========================
 // 🎯 Project Filtering System
