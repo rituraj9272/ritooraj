@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
+// Production build script for Cloudflare Workers / Pages
 const dirsToCopy = ['css', 'js', 'RES'];
 const filesToCopy = ['index.html', 'robots.txt', 'sitemap.xml'];
 const destDir = 'dist';
