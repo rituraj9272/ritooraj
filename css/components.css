@@ -1,6 +1,6 @@
-/* ===========================
-   Loading Screen - Terminal Style
-   =========================== */
+/* ==========================================================================
+   Loading Screen - Cybernetic Boot System
+   ========================================================================== */
 .loading-screen {
     position: fixed;
     top: 0;
@@ -12,47 +12,33 @@
     align-items: center;
     justify-content: center;
     z-index: 10000;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-[data-theme="light"] .loading-screen {
-    background: var(--bg-primary);
-}
-
-.loading-screen.hidden {
-    opacity: 0;
-    visibility: hidden;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    background-image: 
+        radial-gradient(circle at 50% 50%, rgba(5, 8, 20, 0.6), var(--bg-primary)),
+        linear-gradient(rgba(0, 243, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 30px 30px, 30px 30px;
 }
 
 .terminal-window {
     width: 90%;
-    max-width: 700px;
-    background: var(--surface-3);
-    border-radius: var(--r-lg);
-    border: 1px solid var(--hairline-strong);
-    box-shadow: var(--lift);
+    max-width: 750px;
+    background: rgba(11, 15, 29, 0.85);
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 25px rgba(0, 243, 255, 0.25);
     overflow: hidden;
-    backdrop-filter: blur(20px);
-}
-
-[data-theme="light"] .terminal-window {
-    background: var(--surface-3);
-    border: 1px solid var(--hairline-strong);
-    box-shadow: var(--lift);
+    backdrop-filter: blur(15px);
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
 }
 
 .terminal-header {
-    background: var(--surface-2);
-    padding: 12px 16px;
+    background: rgba(5, 8, 20, 0.95);
+    padding: 14px 20px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    border-bottom: 1px solid var(--hairline);
-}
-
-[data-theme="light"] .terminal-header {
-    background: rgba(240, 240, 245, 0.9);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    gap: 14px;
+    border-bottom: 1px solid var(--hairline-strong);
 }
 
 .terminal-buttons {
@@ -61,52 +47,35 @@
 }
 
 .terminal-btn {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    cursor: pointer;
 }
 
-.terminal-btn.close {
-    background: #ff5f56;
-}
-
-.terminal-btn.minimize {
-    background: #ffbd2e;
-}
-
-.terminal-btn.maximize {
-    background: #27c93f;
-}
+.terminal-btn.close { background: var(--accent-color); }
+.terminal-btn.minimize { background: var(--warning-color); }
+.terminal-btn.maximize { background: var(--success-color); }
 
 .terminal-title {
-    color: var(--text-secondary);
+    color: var(--primary-color);
     font-family: var(--font-mono);
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-[data-theme="light"] .terminal-title {
-    color: var(--text-primary);
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
 .terminal-body {
-    padding: 24px;
+    padding: 30px;
     font-family: var(--font-mono);
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 0.9rem;
+    line-height: 1.7;
     color: var(--text-secondary);
-    min-height: 400px;
-    background: rgba(10, 10, 15, 0.6);
-}
-
-[data-theme="light"] .terminal-body {
-    background: rgba(250, 250, 252, 0.8);
-    color: var(--text-primary);
+    min-height: 420px;
+    background: transparent;
 }
 
 .terminal-line {
-    margin: 8px 0;
+    margin: 10px 0;
     opacity: 0;
     transform: translateY(-5px);
 }
@@ -118,19 +87,20 @@
 }
 
 .terminal-line .prompt {
-    color: var(--primary-color);
+    color: var(--accent-cyan);
     font-weight: bold;
     margin-right: 8px;
 }
 
 .terminal-line .text-gray {
-    color: #888;
+    color: var(--text-muted);
 }
 
 .terminal-line .text-success {
-    color: #27c93f;
+    color: var(--success-color);
     margin-right: 8px;
     font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 255, 102, 0.4);
 }
 
 .terminal-line .text-primary {
@@ -140,20 +110,14 @@
 
 .progress-bar-container {
     display: inline-block;
-    width: 300px;
-    height: 20px;
-    background: rgba(50, 50, 60, 0.8);
-    border-radius: 4px;
+    width: 320px;
+    height: 18px;
+    background: rgba(12, 21, 39, 0.8);
     overflow: hidden;
     position: relative;
     margin-right: 12px;
     vertical-align: middle;
-    border: 1px solid rgba(0, 217, 255, 0.3);
-}
-
-[data-theme="light"] .progress-bar-container {
-    background: rgba(230, 230, 240, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 243, 255, 0.35);
 }
 
 .progress-bar-fill {
@@ -172,7 +136,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
     animation: shimmer 1.5s infinite;
 }
 
@@ -180,16 +144,18 @@
     color: var(--primary-color);
     font-weight: bold;
     vertical-align: middle;
+    text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
 }
 
 .terminal-cursor {
     display: inline-block;
     width: 8px;
-    height: 16px;
+    height: 15px;
     background: var(--primary-color);
     margin-left: 4px;
     animation: blink 1s step-end infinite;
     opacity: 0;
+    box-shadow: 0 0 5px var(--primary-color);
 }
 
 .terminal-cursor.visible {
@@ -203,41 +169,56 @@
     }
     
     .terminal-body {
-        padding: 16px;
-        font-size: 0.85rem;
-        min-height: 300px;
+        padding: 20px;
+        font-size: 0.8rem;
+        min-height: 320px;
     }
     
     .progress-bar-container {
-        width: 200px;
+        width: 180px;
     }
 }
 
-/* ===========================
-   Custom Cursor
-   =========================== */
+/* ==========================================================================
+   Custom Target Reticle Cursor
+   ========================================================================== */
 .cursor {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--primary-color);
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--primary-color);
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
     z-index: 9999;
-    transition: transform 0.1s ease;
+    transition: transform 0.08s ease-out;
     mix-blend-mode: difference;
+    box-shadow: 0 0 8px var(--primary-color);
 }
 
 .cursor-follower {
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 217, 255, 0.1);
+    width: 36px;
+    height: 36px;
+    border: 1px dashed var(--accent-color);
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
     z-index: 9998;
-    transition: transform 0.2s ease;
-    backdrop-filter: blur(2px);
+    transition: transform 0.15s ease-out;
+    backdrop-filter: blur(1px);
+    background: rgba(0, 243, 255, 0.05);
+}
+
+/* Target Crosshairs */
+.cursor::before, .cursor::after {
+    content: '';
+    position: absolute;
+    background: var(--primary-color);
+}
+.cursor::before {
+    top: 50%; left: -4px; right: -4px; height: 1px; transform: translateY(-50%);
+}
+.cursor::after {
+    left: 50%; top: -4px; bottom: -4px; width: 1px; transform: translateX(-50%);
 }
 
 @media (max-width: 768px) {
@@ -246,9 +227,9 @@
     }
 }
 
-/* ===========================
+/* ==========================================================================
    Animated Background
-   =========================== */
+   ========================================================================== */
 .background-animation {
     position: fixed;
     top: 0;
@@ -257,7 +238,7 @@
     height: 100%;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.3;
+    opacity: 0.35;
 }
 
 #pipelineCanvas {
@@ -265,50 +246,26 @@
     height: 100%;
 }
 
-/* ===========================
-   Navigation Bar
-   =========================== */
+/* ==========================================================================
+   Futuristic Navbar HUD
+   ========================================================================== */
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(10, 14, 26, 0.8);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid var(--hairline);
+    background: rgba(4, 7, 19, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
     z-index: 1000;
-    padding: 1rem 0;
+    padding: 0.8rem 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
 }
 
 [data-theme="light"] .navbar {
-    background: rgba(255, 255, 255, 0.95);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-[data-theme="light"] .nav-container {
-    background: transparent;
-}
-
-[data-theme="light"] .nav-menu a {
-    color: var(--text-secondary);
-}
-
-[data-theme="light"] .nav-menu a:hover {
-    color: var(--primary-color);
-}
-
-[data-theme="light"] .hamburger span {
-    background: var(--primary-color);
-}
-
-[data-theme="light"] .logo {
-    color: var(--primary-color);
-}
-
-[data-theme="light"] .theme-toggle {
-    background: var(--bg-secondary);
-    border-color: var(--border-color);
+    background: rgba(248, 250, 252, 0.9);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .nav-container {
@@ -323,156 +280,165 @@
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .theme-toggle {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--r-full);
-    border: 1px solid var(--hairline-strong);
-    background: var(--surface-2);
+    width: 38px;
+    height: 38px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border-color);
+    background: rgba(12, 21, 39, 0.6);
     color: var(--primary-color);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1.1rem;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: 1rem;
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
 }
 
 .theme-toggle:hover {
-    transform: rotate(180deg) scale(1.1);
     border-color: var(--primary-color);
-    box-shadow: var(--lift);
-}
-
-.theme-toggle i {
-    transition: transform 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+    transform: scale(1.05);
 }
 
 .logo {
     font-family: var(--font-mono);
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: bold;
     color: var(--primary-color);
+    text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
+    letter-spacing: 1px;
 }
 
 .terminal-prompt {
     color: var(--success-color);
     margin-right: 0.5rem;
+    text-shadow: 0 0 5px rgba(0, 255, 102, 0.5);
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 2.2rem;
 }
 
 .nav-menu a {
     color: var(--text-secondary);
     text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     transition: var(--transition-fast);
+    padding: 6px 0;
     position: relative;
 }
 
 .nav-menu a::after {
     content: '';
     position: absolute;
-    bottom: -5px;
-    left: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 0;
-    height: 2px;
+    height: 1px;
     background: var(--primary-color);
+    box-shadow: 0 0 6px var(--primary-color);
     transition: var(--transition-normal);
 }
 
 .nav-menu a:hover {
     color: var(--primary-color);
+    text-shadow: 0 0 8px rgba(0, 243, 255, 0.5);
 }
 
 .nav-menu a:hover::after {
-    width: 100%;
+    width: 80%;
 }
 
 .hamburger {
     display: none;
     flex-direction: column;
     cursor: pointer;
-    gap: 4px;
-    /* button reset — element is now a <button> for keyboard + a11y */
+    gap: 5px;
     background: none;
     border: none;
-    padding: 4px;
+    padding: 6px;
 }
 
 .hamburger span {
-    width: 25px;
-    height: 3px;
+    width: 24px;
+    height: 2px;
     background: var(--primary-color);
     transition: var(--transition-fast);
 }
 
-/* ===========================
-   Mobile Bottom Navigation
-   =========================== */
+/* Mobile Bottom Navigation */
 .mobile-bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(10, 14, 26, 0.95);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(4, 7, 19, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border-top: 1px solid var(--border-color);
-    padding: 0.5rem 0;
+    padding: 0.6rem 0;
     display: none;
     justify-content: space-around;
     z-index: 999;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.5);
 }
 
 [data-theme="light"] .mobile-bottom-nav {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(248, 250, 252, 0.95);
 }
 
 .mobile-bottom-nav .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
-    padding: 0.5rem 1rem;
-    color: var(--text-muted);
+    gap: 0.2rem;
+    padding: 0.4rem 0.8rem;
+    color: var(--text-secondary);
     text-decoration: none;
-    font-size: 0.7rem;
-    transition: all 0.3s ease;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
     position: relative;
 }
 
 .mobile-bottom-nav .nav-item i {
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
 }
 
 .mobile-bottom-nav .nav-item.active {
     color: var(--primary-color);
+    text-shadow: 0 0 5px rgba(0, 243, 255, 0.4);
 }
 
 .mobile-bottom-nav .nav-item.active i {
-    transform: scale(1.2);
+    transform: translateY(-2px);
 }
 
 .mobile-bottom-nav .nav-item::before {
     content: '';
     position: absolute;
-    top: -2px;
+    top: -10px;
     left: 50%;
     transform: translateX(-50%) scaleX(0);
-    width: 30px;
-    height: 3px;
+    width: 25px;
+    height: 2px;
     background: var(--primary-color);
-    border-radius: 0 0 3px 3px;
-    transition: transform 0.3s ease;
+    box-shadow: 0 0 6px var(--primary-color);
+    transition: transform 0.25s ease;
 }
 
 .mobile-bottom-nav .nav-item.active::before {
@@ -480,126 +446,166 @@
 }
 
 @media (max-width: 768px) {
-    .mobile-bottom-nav {
-        display: flex;
-    }
+    .mobile-bottom-nav { display: flex; }
 }
 
-/* ===========================
-   Status Dot / "Operational" motif (live-dashboard signal)
-   Requirement 1.1, 1.3
-   =========================== */
+/* ==========================================================================
+   HUD Status Badges
+   ========================================================================== */
 .status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.3rem 0.75rem;
-    background: var(--surface-2);
-    border: 1px solid var(--hairline-strong);
-    border-radius: var(--r-full);
+    gap: 0.6rem;
+    padding: 0.4rem 0.9rem;
+    background: rgba(12, 21, 39, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: var(--r-xs);
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--text-body);
+    color: var(--primary-color);
     vertical-align: middle;
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
 }
 
 .status-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: var(--r-full);
-    background: var(--accent-green);
-    box-shadow: 0 0 0 0 rgba(0, 255, 163, 0.5);
-    flex-shrink: 0;
-    animation: statusPulse 2.4s ease-out infinite;
+    background: var(--success-color);
+    box-shadow: 0 0 8px var(--success-color);
+    animation: statusPulse 1.8s ease-out infinite;
 }
 
 @keyframes statusPulse {
-    0%   { box-shadow: 0 0 0 0 rgba(0, 255, 163, 0.5); }
-    70%  { box-shadow: 0 0 0 6px rgba(0, 255, 163, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(0, 255, 163, 0); }
+    0%   { box-shadow: 0 0 0 0 rgba(0, 255, 102, 0.6); }
+    70%  { box-shadow: 0 0 0 6px rgba(0, 255, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 255, 102, 0); }
 }
 
-/* ===========================
-   Reusable code-window chrome (traffic-light shell)
-   Shared surface for terminal / code / output blocks. Requirement 1.3
-   =========================== */
+/* ==========================================================================
+   Cyber Button Design (Laser-cut Corners & Neon Shadows)
+   ========================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.btn-primary {
+    background: rgba(0, 243, 255, 0.1);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background: var(--primary-color);
+    color: var(--bg-primary);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: rgba(157, 0, 255, 0.05);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: rgba(157, 0, 255, 0.15);
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+    box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   SRE Case Code Window (Traffic Light Design)
+   ========================================================================== */
 .code-window {
-    background: var(--surface-3);
-    border: 1px solid var(--hairline-strong);
-    border-radius: var(--r-lg);
+    background: rgba(8, 13, 26, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: var(--r-xs);
     overflow: hidden;
-    box-shadow: var(--lift);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
 }
 
 .code-window-header {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 16px;
-    background: var(--surface-2);
-    border-bottom: 1px solid var(--hairline);
+    padding: 10px 16px;
+    background: rgba(4, 7, 19, 0.95);
+    border-bottom: 1px solid var(--border-color);
     font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--text-muted);
-}
-
-.window-dots {
-    display: flex;
-    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    letter-spacing: 0.5px;
 }
 
 .window-dots i {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: var(--r-full);
     display: inline-block;
 }
 
-.window-dots i.red { background: #FF5F57; }
-.window-dots i.yellow { background: #FFBD2E; }
-.window-dots i.green { background: #28CA42; }
+.window-dots i.red { background: var(--accent-color); }
+.window-dots i.yellow { background: var(--warning-color); }
+.window-dots i.green { background: var(--success-color); }
 
-/* ===========================
-   Terminal (interactive command input/output — Requirement 2)
-   =========================== */
+/* ==========================================================================
+   Terminal Section Layout
+   ========================================================================== */
 .terminal-hint {
     font-family: var(--font-mono);
-    font-size: 0.82rem;
-    margin: 0.5rem 0 0.25rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
 }
 
 .terminal-interactive-output {
     font-family: var(--font-mono);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     white-space: pre-wrap;
     word-break: break-word;
     max-height: 240px;
     overflow-y: auto;
-    padding: 0.5rem 0;
-    border-top: var(--hairline);
-    border-bottom: var(--hairline);
-    margin: 0.25rem 0;
+    padding: 10px;
+    background: rgba(5, 8, 20, 0.6);
+    border: 1px solid var(--border-color);
+    margin: 10px 0;
 }
 
 .terminal-cmd-line {
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .terminal-cmd-echo {
     color: var(--accent-cyan);
+    font-weight: bold;
 }
 
 .terminal-cmd-output {
-    color: var(--text-muted);
-    white-space: pre-wrap;
+    color: var(--text-secondary);
 }
 
 .terminal-cmd-error {
-    color: var(--accent-pink);
-    white-space: pre-wrap;
+    color: var(--accent-color);
+    font-weight: bold;
 }
 
 .terminal-input-line {
@@ -607,11 +613,14 @@
     align-items: center;
     gap: 0.5rem;
     font-family: var(--font-mono);
+    border-top: 1px dashed var(--border-color);
+    padding-top: 12px;
 }
 
 .terminal-input-line .prompt {
     color: var(--accent-cyan);
     white-space: nowrap;
+    font-weight: bold;
 }
 
 .terminal-input {
@@ -619,118 +628,134 @@
     background: transparent;
     border: none;
     outline: none;
-    color: var(--ink);
+    color: var(--primary-color);
     font-family: var(--font-mono);
-    font-size: 0.95rem;
-    caret-color: var(--accent-cyan);
+    font-size: 0.9rem;
+    caret-color: var(--primary-color);
 }
 
 .terminal-input::placeholder {
     color: var(--text-muted);
-    opacity: 0.6;
 }
 
-/* ===========================
-   Contact form errors / status (Requirement 6)
-   =========================== */
+/* ==========================================================================
+   Contact Form Control
+   ========================================================================== */
 .form-error {
     display: none;
-    color: var(--accent-pink);
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
+    color: var(--accent-color);
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    margin-top: 0.3rem;
 }
 
 .form-status {
     display: none;
-    margin-top: 0.75rem;
-    padding: 0.6rem 0.8rem;
-    border-radius: var(--r-md);
-    font-size: 0.88rem;
-    border: var(--hairline);
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: var(--r-xs);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    border: 1px solid var(--border-color);
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
 }
 
 .form-status-success {
-    color: var(--accent-green);
-    border-color: rgba(0, 255, 163, 0.3);
-    background: rgba(0, 255, 163, 0.08);
+    color: var(--success-color);
+    border-color: var(--success-color);
+    background: rgba(0, 255, 102, 0.05);
 }
 
 .form-status-error {
-    color: var(--accent-pink);
-    border-color: rgba(255, 0, 110, 0.3);
-    background: rgba(255, 0, 110, 0.08);
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    background: rgba(255, 0, 127, 0.05);
 }
 
 .form-status-pending {
-    color: var(--text-muted);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 .form-group input[aria-invalid="true"],
 .form-group textarea[aria-invalid="true"] {
-    border-color: var(--accent-pink);
+    border-color: var(--accent-color) !important;
+    box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
 }
 
-/* ===========================
-   Featured GitHub repositories (Requirement 4.4)
-   =========================== */
+/* ==========================================================================
+   Featured Repos (holographic telemetry panels)
+   ========================================================================== */
 .github-source {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
 }
 
 .featured-repos {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.2rem;
+    margin-top: 1.2rem;
 }
 
 .featured-repo {
     display: block;
-    padding: 1rem;
-    border-radius: var(--r-lg);
-    background: var(--surface-2);
-    border: var(--hairline);
+    padding: 1.2rem;
+    background: rgba(12, 21, 39, 0.5);
+    border: 1px solid var(--border-color);
     text-decoration: none;
-    color: var(--ink);
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    color: var(--text-primary);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
 }
 
 .featured-repo:hover,
 .featured-repo:focus-visible {
-    border-color: var(--accent-cyan);
-    transform: translateY(-3px);
+    border-color: var(--primary-color);
+    background: rgba(0, 243, 255, 0.05);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+    transform: translateY(-2px);
     outline: none;
 }
 
 .fr-name {
     font-family: var(--font-mono);
-    font-weight: 600;
-    color: var(--accent-cyan);
-    margin-bottom: 0.4rem;
-    word-break: break-word;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
 }
 
 .fr-desc {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
 }
 
 .fr-meta {
     display: flex;
-    gap: 0.75rem;
-    font-size: 0.76rem;
-    color: var(--text-muted);
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
 }
 
-/* ===========================
-   Architecture diagrams (Requirement 5)
-   =========================== */
+.fr-lang { color: var(--accent-purple); }
+.fr-stars { color: var(--warning-color); }
+
+/* ==========================================================================
+   Architecture Blueprint schematic nodes
+   ========================================================================== */
 .arch-diagram-host {
     width: 100%;
     overflow-x: auto;
+    border: 1px solid var(--border-color);
+    background: rgba(6, 10, 23, 0.8);
+    padding: 20px;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
 }
 
 .arch-svg {
@@ -741,25 +766,27 @@
 
 .arch-node {
     cursor: pointer;
+    outline: none;
 }
 
 .arch-node-circle {
-    fill: var(--surface-3);
-    stroke: var(--hairline-strong);
+    fill: rgba(8, 13, 26, 0.95);
+    stroke: var(--border-color);
     stroke-width: 1.5;
-    transition: stroke 0.2s ease, fill 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .arch-node-rect {
-    fill: var(--surface-3);
-    stroke: var(--hairline-strong);
+    fill: rgba(8, 13, 26, 0.95);
+    stroke: var(--border-color);
     stroke-width: 1.5;
-    transition: stroke 0.2s ease, fill 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .arch-node-icon {
     font-size: 26px;
-    fill: var(--text-muted);
+    fill: var(--text-secondary);
+    transition: fill 0.2s ease;
 }
 
 .arch-node-icon-sm {
@@ -767,18 +794,20 @@
 }
 
 .arch-node-label {
-    fill: var(--text-body);
+    fill: var(--text-primary);
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .arch-layer-title {
-    fill: var(--text-muted);
+    fill: var(--primary-color);
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* Accent-cycle coloring (design.md): cyan -> purple -> green -> pink -> amber */
+/* Accent coloring */
 .arch-accent-cyan .arch-node-circle,
 .arch-accent-cyan .arch-node-rect { stroke: var(--accent-cyan); }
 .arch-accent-cyan .arch-node-icon { fill: var(--accent-cyan); }
@@ -795,18 +824,24 @@
 .arch-accent-amber .arch-node-rect { stroke: var(--accent-amber); }
 .arch-accent-amber .arch-node-icon { fill: var(--accent-amber); }
 
-/* Hover / keyboard focus highlight (Requirement 5.2, 12.3) */
+/* Highlight */
 .arch-node.is-highlighted .arch-node-circle,
 .arch-node.is-highlighted .arch-node-rect {
-    fill: rgba(0, 217, 255, 0.12);
+    fill: rgba(0, 243, 255, 0.08);
+    stroke: var(--primary-color);
     stroke-width: 2.5;
+    filter: drop-shadow(0 0 5px rgba(0, 243, 255, 0.4));
 }
 
-/* Edge flow via stroke-dashoffset, gated by .in-view (Requirement 5.3) */
+.arch-node.is-highlighted .arch-node-icon {
+    fill: var(--primary-color);
+}
+
+/* Flow lines */
 .arch-edge {
     stroke-width: 2;
-    stroke-dasharray: 6 6;
-    opacity: 0.5;
+    stroke-dasharray: 6 4;
+    opacity: 0.6;
 }
 
 .arch-accent-cyan.arch-edge,
@@ -817,9 +852,5 @@
 .arch-accent-amber.arch-edge { stroke: var(--accent-amber); }
 
 .arch-svg.in-view .arch-edge {
-    animation: arch-flow 1s linear infinite;
-}
-
-@keyframes arch-flow {
-    to { stroke-dashoffset: -12; }
+    animation: arch-flow 0.8s linear infinite;
 }

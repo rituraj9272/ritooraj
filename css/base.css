@@ -1,6 +1,6 @@
-/* ===========================
-   Base / Reset & Layout Primitives
-   =========================== */
+/* ==========================================================================
+   Base / Reset & Layout Primitives (Futuristic Cyber-SRE Redesign)
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -18,29 +18,51 @@ html {
 
 body {
     font-family: var(--font-ui);
-    background: var(--bg-primary);
+    background-color: var(--bg-primary);
+    /* High-tech SRE grid background overlay */
+    background-image: 
+        radial-gradient(circle at 50% 50%, rgba(5, 8, 20, 0.5), var(--bg-primary)),
+        linear-gradient(rgba(0, 243, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.04) 1px, transparent 1px);
+    background-size: 100% 100%, 45px 45px, 45px 45px;
+    background-attachment: fixed;
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
     transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
+}
+
+/* scanline overlay for the cyberpunk HUD look */
+body::after {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.12) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.005), rgba(0, 0, 255, 0.01));
+    background-size: 100% 4px, 6px 100%;
+    z-index: 99999;
+    pointer-events: none;
+    opacity: 0.85;
 }
 
 /* Visible focus indicator for keyboard users (Requirement 12.4) */
 :focus-visible {
     outline: 2px solid var(--accent-cyan);
-    outline-offset: 2px;
-    border-radius: 2px;
+    outline-offset: 3px;
+    box-shadow: 0 0 10px var(--accent-cyan);
 }
 
-/* The native cursor is never fully removed (custom cursor is decorative) */
-:focus { outline-color: var(--accent-cyan); }
+:focus { 
+    outline-color: var(--accent-cyan); 
+}
 
-/* ===========================
-   Section Styles
-   =========================== */
+/* ==========================================================================
+   Section Styles (HUD Telemetry Modules)
+   ========================================================================== */
 .section {
     position: relative;
-    padding: 6rem 2rem;
+    padding: 7rem 2rem;
     z-index: 1;
 }
 
@@ -49,20 +71,31 @@ body {
     margin: 0 auto;
 }
 
-/* Section titles read as shell commands -> monospace */
+/* Section titles read as SRE system logs */
 .section-title {
-    font-size: clamp(2rem, 4vw, 2.5rem);
-    margin-bottom: 3rem;
+    font-size: clamp(1.8rem, 3.5vw, 2.3rem);
+    margin-bottom: 3.5rem;
     color: var(--primary-color);
     font-family: var(--font-mono);
     display: flex;
     align-items: center;
     gap: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
 }
 
-/* ===========================
+.section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-hover), transparent);
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* ==========================================================================
    Utility Classes
-   =========================== */
+   ========================================================================== */
 .fade-in {
     animation: fadeIn 1s ease;
 }
@@ -73,4 +106,43 @@ body {
 
 .slide-in-right {
     animation: slideInRight 0.5s ease;
+}
+
+/* Cyber text effects */
+.text-cyber-glitch {
+    position: relative;
+    text-shadow: 0.05em 0 0 var(--accent-pink), -0.025em -0.05em 0 var(--accent-cyan),
+                 0.025em 0.05em 0 var(--accent-green);
+    animation: glitch 1s infinite;
+}
+
+@keyframes glitch {
+    0% {
+        text-shadow: 0.05em 0 0 var(--accent-pink), -0.025em -0.05em 0 var(--accent-cyan),
+                     0.025em 0.05em 0 var(--accent-green);
+    }
+    14% {
+        text-shadow: 0.05em 0 0 var(--accent-pink), -0.025em -0.05em 0 var(--accent-cyan),
+                     0.025em 0.05em 0 var(--accent-green);
+    }
+    15% {
+        text-shadow: -0.05em -0.025em 0 var(--accent-pink), 0.025em 0.025em 0 var(--accent-cyan),
+                     -0.05em -0.05em 0 var(--accent-green);
+    }
+    49% {
+        text-shadow: -0.05em -0.025em 0 var(--accent-pink), 0.025em 0.025em 0 var(--accent-cyan),
+                     -0.05em -0.05em 0 var(--accent-green);
+    }
+    50% {
+        text-shadow: 0.025em 0.05em 0 var(--accent-pink), -0.05em 0.025em 0 var(--accent-cyan),
+                     0.05em 0.025em 0 var(--accent-green);
+    }
+    99% {
+        text-shadow: 0.025em 0.05em 0 var(--accent-pink), -0.05em 0.025em 0 var(--accent-cyan),
+                     0.05em 0.025em 0 var(--accent-green);
+    }
+    100% {
+        text-shadow: -0.025em 0 0 var(--accent-pink), -0.025em -0.025em 0 var(--accent-cyan),
+                     -0.025em -0.05em 0 var(--accent-green);
+    }
 }
