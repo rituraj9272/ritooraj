@@ -1,0 +1,11 @@
+# https://ritooraj01.github.io/robots.txt
+User-agent: *
+Allow: /
+
+# Dev-only test assets must not be indexed or crawled.
+Disallow: /tests/
+# Design reference artifacts (kept out of the deployed bundle in practice,
+# disallowed here as a belt-and-braces measure).
+Disallow: /RES/design-refs/
+
+Sitemap: https://ritooraj01.github.io/sitemap.xml

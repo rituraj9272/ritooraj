@@ -1,0 +1,165 @@
+/* ===========================
+   CSS Variables (Design Tokens)
+   =========================== */
+:root {
+    /* Colors */
+    --primary-color: #00D9FF;
+    --secondary-color: #7B2FF7;
+    --accent-color: #FF006E;
+    --success-color: #00FFA3;
+    --warning-color: #FFD60A;
+    
+    /* Dark Theme */
+    --bg-primary: #0A0E1A;
+    --bg-secondary: #0F1419;
+    --bg-tertiary: #1A1F2E;
+    --bg-card: #151A28;
+    
+    /* Text Colors */
+    --text-primary: #FFFFFF;
+    --text-secondary: #B4BCD0;
+    --text-muted: #6B7280;
+    
+    /* Effects */
+    --shadow-sm: 0 2px 8px rgba(0, 217, 255, 0.1);
+    --shadow-md: 0 4px 16px rgba(0, 217, 255, 0.15);
+    --shadow-lg: 0 8px 32px rgba(0, 217, 255, 0.2);
+    --shadow-glow: 0 0 20px rgba(0, 217, 255, 0.3);
+    
+    /* Borders */
+    --border-color: rgba(0, 217, 255, 0.2);
+    --border-hover: rgba(0, 217, 255, 0.5);
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+    --primary-color: #0099CC;
+    --secondary-color: #6B21A8;
+    --accent-color: #DC2626;
+    --success-color: #059669;
+    --warning-color: #D97706;
+    
+    --bg-primary: #F8FAFC;
+    --bg-secondary: #F1F5F9;
+    --bg-tertiary: #E2E8F0;
+    --bg-card: #FFFFFF;
+    
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+    
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.15);
+    --shadow-glow: 0 0 20px rgba(0, 153, 204, 0.2);
+    
+    --border-color: rgba(0, 0, 0, 0.1);
+    --border-hover: rgba(0, 153, 204, 0.4);
+}
+
+/* ==========================================================================
+   Signature Interface Tokens (Visual Design Language)
+   Editorial-dark developer-tool aesthetic. These EXTEND the palette above;
+   the legacy variables are retained for backward compatibility during
+   migration. See design.md "Visual Design Language (Signature Interface
+   Tokens)". Requirements: 1.2, 1.3, 8.5
+   ========================================================================== */
+:root {
+    /* Canvas & surface layers (dark theme) — luminance-stepped, no shadow reliance */
+    --canvas:            #06070D;   /* deepest page background */
+    --surface-1:         #0A0E1A;   /* existing bg-primary, card floor */
+    --surface-2:         #10131F;   /* elevated card */
+    --surface-3:         #151A28;   /* code/terminal well (existing bg-card) */
+
+    /* Hairlines replace shadows */
+    --hairline:          rgba(255, 255, 255, 0.06);
+    --hairline-strong:   rgba(255, 255, 255, 0.12);
+    --divider-soft:      rgba(255, 255, 255, 0.04);
+
+    /* Accents (retained identity) — used as solids only for small high-signal elements */
+    --accent-cyan:       #00D9FF;
+    --accent-purple:     #7B2FF7;
+    --accent-pink:       #FF006E;
+    --accent-green:      #00FFA3;   /* status / success / "operational" */
+    --accent-amber:      #FFD60A;   /* warnings, highlight strokes */
+
+    /* Atmospheric glow forms (low opacity, backgrounds only) */
+    --glow-cyan:         rgba(0, 217, 255, 0.16);
+    --glow-purple:       rgba(123, 47, 247, 0.18);
+    --glow-pink:         rgba(255, 0, 110, 0.14);
+    --glow-green:        rgba(0, 255, 163, 0.14);
+
+    /* Text ramp */
+    --ink:               #F5F8FF;   /* primary text, faintly cool */
+    --text-body:         rgba(245, 248, 255, 0.86);
+    --text-muted:        rgba(245, 248, 255, 0.60);
+
+    /* Radius vocabulary (strict) */
+    --r-xs: 4px;
+    --r-sm: 6px;
+    --r-md: 8px;
+    --r-lg: 12px;
+    --r-xl: 16px;
+    --r-2xl: 24px;
+    --r-full: 9999px;
+
+    /* Spacing rhythm (4px base) */
+    --sp-xs: 4px;
+    --sp-sm: 8px;
+    --sp-md: 12px;
+    --sp-lg: 16px;
+    --sp-xl: 24px;
+    --sp-2xl: 32px;
+    --sp-section: 96px;
+
+    /* Neutral hover lift (replaces colored box-shadow elevations) */
+    --lift: 0 8px 32px rgba(0, 0, 0, 0.35);
+
+    /* Type families */
+    --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;          /* hero + section openers */
+    --font-ui:      "Inter", system-ui, -apple-system, sans-serif;            /* UI + body */
+    --font-mono:    "JetBrains Mono", "Geist Mono", "Courier New", monospace; /* code + labels */
+
+    /* Ordered accent cycle for diagrams & skill categories:
+       cyan -> purple -> green -> pink -> amber (never repeating adjacently) */
+    --accent-cycle-1: var(--accent-cyan);
+    --accent-cycle-2: var(--accent-purple);
+    --accent-cycle-3: var(--accent-green);
+    --accent-cycle-4: var(--accent-pink);
+    --accent-cycle-5: var(--accent-amber);
+}
+
+/* Light theme — inverted ramp, tuned for >=4.5:1 contrast (Requirement 8.5).
+   Same structure as dark: off-white canvas, near-black ink, black-based
+   hairlines, glow opacities reduced ~40% so washes stay subtle on white. */
+[data-theme="light"] {
+    /* Canvas & surface layers (light theme) */
+    --canvas:            #FAFBFC;   /* off-white page background */
+    --surface-1:         #FFFFFF;   /* card floor */
+    --surface-2:         #F4F6F9;   /* elevated card */
+    --surface-3:         #EDF1F5;   /* code/terminal well */
+
+    /* Hairlines become low-opacity black */
+    --hairline:          rgba(0, 0, 0, 0.08);
+    --hairline-strong:   rgba(0, 0, 0, 0.14);
+    --divider-soft:      rgba(0, 0, 0, 0.05);
+
+    /* Atmospheric glow forms — opacities dropped ~40% for white canvas */
+    --glow-cyan:         rgba(0, 217, 255, 0.10);
+    --glow-purple:       rgba(123, 47, 247, 0.11);
+    --glow-pink:         rgba(255, 0, 110, 0.08);
+    --glow-green:        rgba(0, 255, 163, 0.08);
+
+    /* Text ramp — near-black ink; muted stays >=4.5:1 on off-white */
+    --ink:               #0A0E17;   /* near-black primary text */
+    --text-body:         rgba(10, 14, 23, 0.88);
+    --text-muted:        rgba(10, 14, 23, 0.62);
+
+    /* Neutral hover lift softened for light surfaces */
+    --lift: 0 8px 32px rgba(0, 0, 0, 0.12);
+}

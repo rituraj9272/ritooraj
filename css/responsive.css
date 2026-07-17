@@ -1,0 +1,132 @@
+/* ===========================
+   Responsive Design
+   =========================== */
+@media (max-width: 1024px) {
+    .timeline::before {
+        left: 30px;
+    }
+    
+    .timeline-item:nth-child(even) .timeline-content,
+    .timeline-item:nth-child(odd) .timeline-content {
+        margin-left: 70px;
+        margin-right: 0;
+        width: calc(100% - 70px);
+    }
+    
+    .timeline-marker {
+        left: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+    
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        padding: 2rem;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition-normal);
+    }
+    
+    .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .hero-split-container {
+        flex-direction: column;
+    }
+    
+    .hero-left {
+        padding: 2rem;
+        min-height: 60vh;
+    }
+    
+    .hero-right {
+        min-height: 40vh;
+    }
+    
+    .image-overlay {
+        background: linear-gradient(180deg, var(--bg-primary) 0%, transparent 20%, transparent 100%);
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .section {
+        padding: 4rem 1rem;
+    }
+    
+    .projects-grid,
+    .skills-grid,
+    .case-studies-grid,
+    .cert-grid,
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .pipeline {
+        flex-direction: column;
+    }
+    
+    .pipeline-arrow {
+        transform: rotate(90deg);
+    }
+    
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+    
+    .hero-left {
+        padding: 1.5rem;
+    }
+    
+    .hero-name {
+        font-size: 2rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .about-highlights {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

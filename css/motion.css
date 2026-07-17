@@ -1,0 +1,125 @@
+/* ===========================
+   Motion / Animations
+   Keyframes extracted from the original style.css.
+   prefers-reduced-motion overrides are added in a later task.
+   =========================== */
+
+@keyframes terminalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes cursorBlink {
+    50% { opacity: 0; }
+}
+
+@keyframes pingPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes pingWave {
+    0% {
+        width: 40px;
+        height: 40px;
+        opacity: 0.8;
+    }
+    100% {
+        width: 120px;
+        height: 120px;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ===========================
+   Reduced-motion: disable non-essential animation (Requirement 13.3, 13.4).
+   Under this preference, content renders in its final visible state. The JS
+   modules also gate their loops; this block is the CSS-level guarantee that
+   holds even if JS is disabled. Note: hover/focus micro-interactions still
+   apply non-motion cues (color/opacity/outline) per Requirement 13.2.
+   =========================== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Architecture diagram edges stay in final state, no flow (Requirement 5.4) */
+    .arch-svg .arch-edge {
+        animation: none !important;
+        opacity: 0.7;
+    }
+
+    /* Background canvas particle motion is paused by JS; ensure no paint churn */
+    .background-animation {
+        display: none !important;
+    }
+
+    .terminal-cursor {
+        animation: none !important;
+    }
+}

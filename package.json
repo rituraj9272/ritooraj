@@ -1,0 +1,14 @@
+{
+  "name": "ritooraj-portfolio-tests",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only test harness for the buildless portfolio's pure modules. Not part of the deployed static site.",
+  "scripts": {
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "fast-check": "^3.23.1",
+    "jsdom": "^29.1.1"
+  }
+}

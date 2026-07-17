@@ -1,0 +1,825 @@
+/* ===========================
+   Loading Screen - Terminal Style
+   =========================== */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+[data-theme="light"] .loading-screen {
+    background: var(--bg-primary);
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.terminal-window {
+    width: 90%;
+    max-width: 700px;
+    background: var(--surface-3);
+    border-radius: var(--r-lg);
+    border: 1px solid var(--hairline-strong);
+    box-shadow: var(--lift);
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+}
+
+[data-theme="light"] .terminal-window {
+    background: var(--surface-3);
+    border: 1px solid var(--hairline-strong);
+    box-shadow: var(--lift);
+}
+
+.terminal-header {
+    background: var(--surface-2);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--hairline);
+}
+
+[data-theme="light"] .terminal-header {
+    background: rgba(240, 240, 245, 0.9);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.terminal-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.terminal-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.terminal-btn.close {
+    background: #ff5f56;
+}
+
+.terminal-btn.minimize {
+    background: #ffbd2e;
+}
+
+.terminal-btn.maximize {
+    background: #27c93f;
+}
+
+.terminal-title {
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+[data-theme="light"] .terminal-title {
+    color: var(--text-primary);
+}
+
+.terminal-body {
+    padding: 24px;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    min-height: 400px;
+    background: rgba(10, 10, 15, 0.6);
+}
+
+[data-theme="light"] .terminal-body {
+    background: rgba(250, 250, 252, 0.8);
+    color: var(--text-primary);
+}
+
+.terminal-line {
+    margin: 8px 0;
+    opacity: 0;
+    transform: translateY(-5px);
+}
+
+.terminal-line.visible {
+    opacity: 1;
+    transform: translateY(0);
+    animation: terminalFadeIn 0.3s ease forwards;
+}
+
+.terminal-line .prompt {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.terminal-line .text-gray {
+    color: #888;
+}
+
+.terminal-line .text-success {
+    color: #27c93f;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+.terminal-line .text-primary {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.progress-bar-container {
+    display: inline-block;
+    width: 300px;
+    height: 20px;
+    background: rgba(50, 50, 60, 0.8);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    margin-right: 12px;
+    vertical-align: middle;
+    border: 1px solid rgba(0, 217, 255, 0.3);
+}
+
+[data-theme="light"] .progress-bar-container {
+    background: rgba(230, 230, 240, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    transition: width 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 1.5s infinite;
+}
+
+.progress-text {
+    color: var(--primary-color);
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.terminal-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--primary-color);
+    margin-left: 4px;
+    animation: blink 1s step-end infinite;
+    opacity: 0;
+}
+
+.terminal-cursor.visible {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .terminal-window {
+        width: 95%;
+        max-width: none;
+    }
+    
+    .terminal-body {
+        padding: 16px;
+        font-size: 0.85rem;
+        min-height: 300px;
+    }
+    
+    .progress-bar-container {
+        width: 200px;
+    }
+}
+
+/* ===========================
+   Custom Cursor
+   =========================== */
+.cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: difference;
+}
+
+.cursor-follower {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 217, 255, 0.1);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.2s ease;
+    backdrop-filter: blur(2px);
+}
+
+@media (max-width: 768px) {
+    .cursor, .cursor-follower {
+        display: none;
+    }
+}
+
+/* ===========================
+   Animated Background
+   =========================== */
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+#pipelineCanvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* ===========================
+   Navigation Bar
+   =========================== */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 14, 26, 0.8);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--hairline);
+    z-index: 1000;
+    padding: 1rem 0;
+}
+
+[data-theme="light"] .navbar {
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .nav-container {
+    background: transparent;
+}
+
+[data-theme="light"] .nav-menu a {
+    color: var(--text-secondary);
+}
+
+[data-theme="light"] .nav-menu a:hover {
+    color: var(--primary-color);
+}
+
+[data-theme="light"] .hamburger span {
+    background: var(--primary-color);
+}
+
+[data-theme="light"] .logo {
+    color: var(--primary-color);
+}
+
+[data-theme="light"] .theme-toggle {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--r-full);
+    border: 1px solid var(--hairline-strong);
+    background: var(--surface-2);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.theme-toggle:hover {
+    transform: rotate(180deg) scale(1.1);
+    border-color: var(--primary-color);
+    box-shadow: var(--lift);
+}
+
+.theme-toggle i {
+    transition: transform 0.3s ease;
+}
+
+.logo {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.terminal-prompt {
+    color: var(--success-color);
+    margin-right: 0.5rem;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-menu a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition-fast);
+    position: relative;
+}
+
+.nav-menu a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: var(--transition-normal);
+}
+
+.nav-menu a:hover {
+    color: var(--primary-color);
+}
+
+.nav-menu a:hover::after {
+    width: 100%;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 4px;
+    /* button reset — element is now a <button> for keyboard + a11y */
+    background: none;
+    border: none;
+    padding: 4px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: var(--primary-color);
+    transition: var(--transition-fast);
+}
+
+/* ===========================
+   Mobile Bottom Navigation
+   =========================== */
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 14, 26, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid var(--border-color);
+    padding: 0.5rem 0;
+    display: none;
+    justify-content: space-around;
+    z-index: 999;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] .mobile-bottom-nav {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.mobile-bottom-nav .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.7rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.mobile-bottom-nav .nav-item i {
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.mobile-bottom-nav .nav-item.active {
+    color: var(--primary-color);
+}
+
+.mobile-bottom-nav .nav-item.active i {
+    transform: scale(1.2);
+}
+
+.mobile-bottom-nav .nav-item::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 30px;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 0 0 3px 3px;
+    transition: transform 0.3s ease;
+}
+
+.mobile-bottom-nav .nav-item.active::before {
+    transform: translateX(-50%) scaleX(1);
+}
+
+@media (max-width: 768px) {
+    .mobile-bottom-nav {
+        display: flex;
+    }
+}
+
+/* ===========================
+   Status Dot / "Operational" motif (live-dashboard signal)
+   Requirement 1.1, 1.3
+   =========================== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.75rem;
+    background: var(--surface-2);
+    border: 1px solid var(--hairline-strong);
+    border-radius: var(--r-full);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-body);
+    vertical-align: middle;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--r-full);
+    background: var(--accent-green);
+    box-shadow: 0 0 0 0 rgba(0, 255, 163, 0.5);
+    flex-shrink: 0;
+    animation: statusPulse 2.4s ease-out infinite;
+}
+
+@keyframes statusPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(0, 255, 163, 0.5); }
+    70%  { box-shadow: 0 0 0 6px rgba(0, 255, 163, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 255, 163, 0); }
+}
+
+/* ===========================
+   Reusable code-window chrome (traffic-light shell)
+   Shared surface for terminal / code / output blocks. Requirement 1.3
+   =========================== */
+.code-window {
+    background: var(--surface-3);
+    border: 1px solid var(--hairline-strong);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: var(--lift);
+}
+
+.code-window-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--hairline);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.window-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.window-dots i {
+    width: 12px;
+    height: 12px;
+    border-radius: var(--r-full);
+    display: inline-block;
+}
+
+.window-dots i.red { background: #FF5F57; }
+.window-dots i.yellow { background: #FFBD2E; }
+.window-dots i.green { background: #28CA42; }
+
+/* ===========================
+   Terminal (interactive command input/output — Requirement 2)
+   =========================== */
+.terminal-hint {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    margin: 0.5rem 0 0.25rem;
+}
+
+.terminal-interactive-output {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 0.5rem 0;
+    border-top: var(--hairline);
+    border-bottom: var(--hairline);
+    margin: 0.25rem 0;
+}
+
+.terminal-cmd-line {
+    line-height: 1.5;
+}
+
+.terminal-cmd-echo {
+    color: var(--accent-cyan);
+}
+
+.terminal-cmd-output {
+    color: var(--text-muted);
+    white-space: pre-wrap;
+}
+
+.terminal-cmd-error {
+    color: var(--accent-pink);
+    white-space: pre-wrap;
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+}
+
+.terminal-input-line .prompt {
+    color: var(--accent-cyan);
+    white-space: nowrap;
+}
+
+.terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    caret-color: var(--accent-cyan);
+}
+
+.terminal-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+/* ===========================
+   Contact form errors / status (Requirement 6)
+   =========================== */
+.form-error {
+    display: none;
+    color: var(--accent-pink);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+.form-status {
+    display: none;
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--r-md);
+    font-size: 0.88rem;
+    border: var(--hairline);
+}
+
+.form-status-success {
+    color: var(--accent-green);
+    border-color: rgba(0, 255, 163, 0.3);
+    background: rgba(0, 255, 163, 0.08);
+}
+
+.form-status-error {
+    color: var(--accent-pink);
+    border-color: rgba(255, 0, 110, 0.3);
+    background: rgba(255, 0, 110, 0.08);
+}
+
+.form-status-pending {
+    color: var(--text-muted);
+}
+
+.form-group input[aria-invalid="true"],
+.form-group textarea[aria-invalid="true"] {
+    border-color: var(--accent-pink);
+}
+
+/* ===========================
+   Featured GitHub repositories (Requirement 4.4)
+   =========================== */
+.github-source {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.75rem;
+}
+
+.featured-repos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.featured-repo {
+    display: block;
+    padding: 1rem;
+    border-radius: var(--r-lg);
+    background: var(--surface-2);
+    border: var(--hairline);
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.featured-repo:hover,
+.featured-repo:focus-visible {
+    border-color: var(--accent-cyan);
+    transform: translateY(-3px);
+    outline: none;
+}
+
+.fr-name {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--accent-cyan);
+    margin-bottom: 0.4rem;
+    word-break: break-word;
+}
+
+.fr-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.fr-meta {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+}
+
+/* ===========================
+   Architecture diagrams (Requirement 5)
+   =========================== */
+.arch-diagram-host {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.arch-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.arch-node {
+    cursor: pointer;
+}
+
+.arch-node-circle {
+    fill: var(--surface-3);
+    stroke: var(--hairline-strong);
+    stroke-width: 1.5;
+    transition: stroke 0.2s ease, fill 0.2s ease;
+}
+
+.arch-node-rect {
+    fill: var(--surface-3);
+    stroke: var(--hairline-strong);
+    stroke-width: 1.5;
+    transition: stroke 0.2s ease, fill 0.2s ease;
+}
+
+.arch-node-icon {
+    font-size: 26px;
+    fill: var(--text-muted);
+}
+
+.arch-node-icon-sm {
+    font-size: 20px;
+}
+
+.arch-node-label {
+    fill: var(--text-body);
+    font-family: var(--font-mono);
+    font-size: 12px;
+}
+
+.arch-layer-title {
+    fill: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+}
+
+/* Accent-cycle coloring (design.md): cyan -> purple -> green -> pink -> amber */
+.arch-accent-cyan .arch-node-circle,
+.arch-accent-cyan .arch-node-rect { stroke: var(--accent-cyan); }
+.arch-accent-cyan .arch-node-icon { fill: var(--accent-cyan); }
+.arch-accent-purple .arch-node-circle,
+.arch-accent-purple .arch-node-rect { stroke: var(--accent-purple); }
+.arch-accent-purple .arch-node-icon { fill: var(--accent-purple); }
+.arch-accent-green .arch-node-circle,
+.arch-accent-green .arch-node-rect { stroke: var(--accent-green); }
+.arch-accent-green .arch-node-icon { fill: var(--accent-green); }
+.arch-accent-pink .arch-node-circle,
+.arch-accent-pink .arch-node-rect { stroke: var(--accent-pink); }
+.arch-accent-pink .arch-node-icon { fill: var(--accent-pink); }
+.arch-accent-amber .arch-node-circle,
+.arch-accent-amber .arch-node-rect { stroke: var(--accent-amber); }
+.arch-accent-amber .arch-node-icon { fill: var(--accent-amber); }
+
+/* Hover / keyboard focus highlight (Requirement 5.2, 12.3) */
+.arch-node.is-highlighted .arch-node-circle,
+.arch-node.is-highlighted .arch-node-rect {
+    fill: rgba(0, 217, 255, 0.12);
+    stroke-width: 2.5;
+}
+
+/* Edge flow via stroke-dashoffset, gated by .in-view (Requirement 5.3) */
+.arch-edge {
+    stroke-width: 2;
+    stroke-dasharray: 6 6;
+    opacity: 0.5;
+}
+
+.arch-accent-cyan.arch-edge,
+.arch-edge.arch-accent-cyan { stroke: var(--accent-cyan); }
+.arch-accent-purple.arch-edge { stroke: var(--accent-purple); }
+.arch-accent-green.arch-edge { stroke: var(--accent-green); }
+.arch-accent-pink.arch-edge { stroke: var(--accent-pink); }
+.arch-accent-amber.arch-edge { stroke: var(--accent-amber); }
+
+.arch-svg.in-view .arch-edge {
+    animation: arch-flow 1s linear infinite;
+}
+
+@keyframes arch-flow {
+    to { stroke-dashoffset: -12; }
+}

@@ -1,0 +1,76 @@
+/* ===========================
+   Base / Reset & Layout Primitives
+   =========================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+}
+
+body {
+    font-family: var(--font-ui);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Visible focus indicator for keyboard users (Requirement 12.4) */
+:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* The native cursor is never fully removed (custom cursor is decorative) */
+:focus { outline-color: var(--accent-cyan); }
+
+/* ===========================
+   Section Styles
+   =========================== */
+.section {
+    position: relative;
+    padding: 6rem 2rem;
+    z-index: 1;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Section titles read as shell commands -> monospace */
+.section-title {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    margin-bottom: 3rem;
+    color: var(--primary-color);
+    font-family: var(--font-mono);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* ===========================
+   Utility Classes
+   =========================== */
+.fade-in {
+    animation: fadeIn 1s ease;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.5s ease;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.5s ease;
+}

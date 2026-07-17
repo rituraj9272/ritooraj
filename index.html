@@ -3,10 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Rituraj Singh - DevOps Engineer | Cloud Infrastructure | SRE">
-    <meta name="author" content="Rituraj Singh">
+    <!-- FOUC guard: apply persisted theme before first paint (Requirement 8.3/8.4) -->
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('theme');
+                document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+
+    <!-- Primary + SEO metadata (Requirement 11.1) -->
     <title>Rituraj Singh | DevOps Engineer</title>
-    <link rel="stylesheet" href="style.css?v=4.1">
+    <meta name="description" content="Rituraj Singh — DevOps Engineer specialising in AWS cloud infrastructure, CI/CD automation, and SRE. Supporting national-scale platforms like DigiLocker 2.0 and APISetu.">
+    <meta name="author" content="Rituraj Singh">
+    <meta name="keywords" content="Rituraj Singh, DevOps Engineer, AWS, Cloud Infrastructure, SRE, CI/CD, Kubernetes, Docker">
+    <link rel="canonical" href="https://ritooraj01.github.io">
+
+    <!-- Open Graph / social sharing (Requirement 11.2) -->
+    <meta property="og:title" content="Rituraj Singh | DevOps Engineer">
+    <meta property="og:description" content="DevOps Engineer | Cloud Infrastructure | SRE — building scalable, secure, automated AWS infrastructure.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ritooraj01.github.io">
+    <meta property="og:image" content="https://ritooraj01.github.io/RES/profile.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Rituraj Singh | DevOps Engineer">
+    <meta name="twitter:description" content="DevOps Engineer | Cloud Infrastructure | SRE.">
+    <meta name="twitter:image" content="https://ritooraj01.github.io/RES/profile.png">
+    <!-- Split CSS loaded via ordered <link> tags (avoids @import render-blocking) -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/motion.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- Google Fonts (Signature Interface typography) — HTTPS, preconnect + display=swap -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -76,11 +112,11 @@
                     <i class="fas fa-sun"></i>
                 </button>
             </div>
-            <div class="hamburger" id="hamburger">
+            <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navMenu">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
+            </button>
         </div>
     </nav>
 
@@ -89,6 +125,7 @@
         <div class="hero-split-container">
             <div class="hero-left">
                 <div class="hero-text-content">
+                    <span class="status-badge"><span class="status-dot"></span> Operational</span>
                     <p class="hero-greeting">HELLO,  I  AM</p>
                     <h1 class="hero-name">
                         Rituraj Singh
@@ -101,7 +138,7 @@
                         Supporting national-scale platforms like DigiLocker 2.0 and APISetu.
                     </p>
                     <div class="hero-buttons">
-                        <a href="RES/Rituraj_Devops.pdf" class="btn btn-primary" download>
+                        <a href="RES/resume.pdf" id="resumeLink" class="btn btn-primary" download="Rituraj_Singh_Resume.pdf">
                             <i class="fas fa-download"></i> Download Resume
                         </a>
                         <a href="https://github.com/ritooraj01" target="_blank" class="btn btn-secondary">
@@ -434,11 +471,11 @@
 
             <!-- GitHub Stats -->
             <div class="github-stats">
-                <h3><i class="fab fa-github"></i> GitHub Activity</h3>
+                <h3><i class="fab fa-github"></i> GitHub Activity <span class="status-badge"><span class="status-dot"></span> Operational</span></h3>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <i class="fas fa-code-branch"></i>
-                        <h4>12</h4>
+                        <h4 id="ghRepoCount">12</h4>
                         <p>Repositories</p>
                     </div>
                     <div class="stat-card">
@@ -448,10 +485,14 @@
                     </div>
                     <div class="stat-card">
                         <i class="fas fa-laptop-code"></i>
-                        <h4>Python</h4>
+                        <h4 id="ghPrimaryLanguage">Python</h4>
                         <p>Primary Language</p>
                     </div>
                 </div>
+                <p class="github-source" id="ghSource" aria-live="polite"></p>
+
+                <!-- Featured public repositories (Requirement 4.4) -->
+                <div class="featured-repos" id="featuredRepos" aria-label="Featured GitHub repositories"></div>
             </div>
         </div>
     </section>
@@ -466,183 +507,13 @@
             <!-- CI/CD Pipeline -->
             <div class="architecture-diagram">
                 <h3>CI/CD Pipeline Architecture</h3>
-                <div class="pipeline">
-                    <div class="pipeline-step">
-                        <i class="fab fa-github"></i>
-                        <span>GitHub</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fas fa-hammer"></i>
-                        <span>Jenkins</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fas fa-check-circle"></i>
-                        <span>SonarQube</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fab fa-docker"></i>
-                        <span>Docker Build</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fas fa-box"></i>
-                        <span>AWS ECR</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fas fa-server"></i>
-                        <span>ECS Deploy</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fas fa-balance-scale"></i>
-                        <span>ALB</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step success">
-                        <i class="fas fa-rocket"></i>
-                        <span>Production</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- GitLab CI/CD with ArgoCD -->
-            <div class="architecture-diagram">
-                <h3>GitLab CI/CD with ArgoCD (GitOps)</h3>
-                <div class="pipeline">
-                    <div class="pipeline-step">
-                        <i class="fab fa-gitlab"></i>
-                        <span>GitLab Repo</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fas fa-cogs"></i>
-                        <span>GitLab CI/CD</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Security Scans</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fab fa-docker"></i>
-                        <span>Docker Build</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fas fa-box"></i>
-                        <span>Container Registry</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fas fa-code-branch"></i>
-                        <span>GitOps Repo</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fas fa-sync-alt"></i>
-                        <span>ArgoCD</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fas fa-dharmachakra"></i>
-                        <span>Kubernetes</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step success">
-                        <i class="fas fa-rocket"></i>
-                        <span>Production</span>
-                    </div>
-                    <div class="pipeline-arrow">→</div>
-                    <div class="pipeline-step">
-                        <i class="fas fa-chart-area"></i>
-                        <span>Prometheus+Grafana</span>
-                    </div>
-                </div>
+                <div class="arch-diagram-host" id="ciCdDiagram"></div>
             </div>
 
             <!-- Cloud Infrastructure -->
             <div class="architecture-diagram">
                 <h3>Cloud Infrastructure Architecture</h3>
-                <div class="infrastructure-flow">
-                    <div class="infra-layer">
-                        <h4>Client Layer</h4>
-                        <div class="infra-boxes">
-                            <div class="infra-box">
-                                <i class="fas fa-users"></i>
-                                <span>Users</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layer-arrow">↓</div>
-                    <div class="infra-layer">
-                        <h4>Edge Layer</h4>
-                        <div class="infra-boxes">
-                            <div class="infra-box">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>CloudFront</span>
-                            </div>
-                            <div class="infra-box">
-                                <i class="fas fa-balance-scale"></i>
-                                <span>ALB</span>
-                            </div>
-                            <div class="infra-box">
-                                <i class="fas fa-lock"></i>
-                                <span>WAF</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layer-arrow">↓</div>
-                    <div class="infra-layer">
-                        <h4>Application Layer</h4>
-                        <div class="infra-boxes">
-                            <div class="infra-box">
-                                <i class="fab fa-docker"></i>
-                                <span>ECS Cluster</span>
-                            </div>
-                            <div class="infra-box">
-                                <i class="fas fa-server"></i>
-                                <span>EC2 Instances</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layer-arrow">↓</div>
-                    <div class="infra-layer">
-                        <h4>Data Layer</h4>
-                        <div class="infra-boxes">
-                            <div class="infra-box">
-                                <i class="fas fa-database"></i>
-                                <span>Redis Cluster</span>
-                            </div>
-                            <div class="infra-box">
-                                <i class="fas fa-exchange-alt"></i>
-                                <span>RabbitMQ</span>
-                            </div>
-                            <div class="infra-box">
-                                <i class="fas fa-hdd"></i>
-                                <span>RDS/S3</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layer-arrow">↓</div>
-                    <div class="infra-layer">
-                        <h4>Monitoring Layer</h4>
-                        <div class="infra-boxes">
-                            <div class="infra-box">
-                                <i class="fas fa-chart-line"></i>
-                                <span>CloudWatch</span>
-                            </div>
-                            <div class="infra-box">
-                                <i class="fas fa-bell"></i>
-                                <span>Alerts</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="arch-diagram-host" id="cloudDiagram"></div>
             </div>
         </div>
     </section>
@@ -875,9 +746,26 @@
                         <span class="prompt">$</span> deploy --production --friday
                     </div>
                     <div class="terminal-output success">✓ Deploying on Friday because I'm confident 😎</div>
-                    
-                    <div class="terminal-line typing">
-                        <span class="prompt">$</span> <span class="cursor">|</span>
+
+                    <div class="terminal-hint text-gray">Type <span class="text-primary">help</span> and press Enter to explore. Try: about, projects, contact, clear.</div>
+
+                    <!-- Interactive command output (Requirement 2.5) -->
+                    <div class="terminal-interactive-output" id="terminal-output" aria-live="polite"></div>
+
+                    <!-- Interactive command input (Requirement 2.2, 2.6) -->
+                    <div class="terminal-line terminal-input-line">
+                        <label class="prompt" for="terminal-input">visitor@portfolio:~$</label>
+                        <input
+                            type="text"
+                            id="terminal-input"
+                            class="terminal-input"
+                            autocomplete="off"
+                            autocapitalize="off"
+                            autocorrect="off"
+                            spellcheck="false"
+                            aria-label="Terminal command input. Type help for available commands."
+                            placeholder="type a command…">
+                        <span class="cursor" aria-hidden="true">|</span>
                     </div>
                 </div>
             </div>
@@ -931,22 +819,26 @@
                     </div>
                 </div>
                 <div class="contact-form-wrapper">
-                    <form class="contact-form" id="contactForm">
+                    <form class="contact-form" id="contactForm" novalidate>
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" id="name" name="name" required>
+                            <input type="text" id="name" name="name" required aria-describedby="name-error">
+                            <span class="form-error" id="name-error" role="alert"></span>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
+                            <input type="email" id="email" name="email" required aria-describedby="email-error">
+                            <span class="form-error" id="email-error" role="alert"></span>
                         </div>
                         <div class="form-group">
                             <label for="message">Message</label>
-                            <textarea id="message" name="message" rows="5" required></textarea>
+                            <textarea id="message" name="message" rows="5" required aria-describedby="message-error"></textarea>
+                            <span class="form-error" id="message-error" role="alert"></span>
                         </div>
                         <button type="submit" class="btn btn-primary btn-compact">
                             <i class="fas fa-paper-plane"></i> Send
                         </button>
+                        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
                     </form>
                 </div>
             </div>
@@ -1000,6 +892,6 @@
         </a>
     </nav>
 
-    <script src="script.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
