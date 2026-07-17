@@ -1,0 +1,31 @@
+# Cloudflare Workers .assetsignore
+# Files and directories listed here are excluded from static asset uploads.
+# Follows the same syntax as .gitignore.
+
+# Dev dependencies — the workerd binary alone is 122MB
+node_modules/
+
+# Dev-only test suite
+tests/
+
+# Specification / planning docs (dev-only)
+specs/
+
+# Design reference files
+RES/design-refs/
+
+# Package manager files (not needed at runtime)
+package.json
+package-lock.json
+bun.lockb
+
+# Git internals
+.git/
+.gitignore
+
+# Dev-only documentation
+TESTING.md
+README.md
+
+# Wrangler artefacts (auto-generated during build, not static assets)
+.wrangler/
