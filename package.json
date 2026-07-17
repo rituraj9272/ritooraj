@@ -5,7 +5,8 @@
   "type": "module",
   "description": "Dev-only test harness for the buildless portfolio's pure modules. Not part of the deployed static site.",
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "build": "node build.js"
   },
   "devDependencies": {
     "fast-check": "^3.23.1",
