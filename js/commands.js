@@ -50,7 +50,12 @@ const CONTACT_OUTPUT = [
 
 const WHOAMI_OUTPUT = [
     'Rituraj Singh',
-    'DevOps Engineer | Cloud Infrastructure | SRE'
+    'DevOps Engineer | Platform Engineer | Cloud Engineer'
+].join('\n');
+
+const EDUCATION_OUTPUT = [
+    'Bachelor of Technology - Electrical & Electronics Engineering',
+    'Krishna Institute of Engineering and Technology (2018 - 2022)'
 ].join('\n');
 
 // One-line descriptions for navigate commands, keyed by section id.
@@ -107,6 +112,13 @@ function buildRegistry() {
         type: 'output',
         describe: 'Print canonical contact details',
         output: CONTACT_OUTPUT
+    };
+
+    registry.education = {
+        name: 'education',
+        type: 'output',
+        describe: 'Print education details',
+        output: EDUCATION_OUTPUT
     };
 
     return registry;

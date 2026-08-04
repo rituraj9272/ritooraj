@@ -23,7 +23,7 @@ const CI_CD_STEPS = [
     { label: 'SonarQube', icon: 'fas fa-check-circle' },
     { label: 'Docker Build', icon: 'fab fa-docker' },
     { label: 'AWS ECR', icon: 'fas fa-box' },
-    { label: 'ECS Deploy', icon: 'fas fa-server' },
+    { label: 'ECS / EKS', icon: 'fas fa-server' },
     { label: 'ALB', icon: 'fas fa-balance-scale' },
     { label: 'Production', icon: 'fas fa-rocket' }
 ];
@@ -68,27 +68,13 @@ function svgEl(tag, attrs = {}) {
     return el;
 }
 
-function fontAwesomeGlyph(iconClass) {
-    // Font Awesome renders via <i class="...">; we mirror the class on a text
-    // element so the CDN stylesheet (already loaded) supplies the glyph.
-    const i = globalThis.document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    i.setAttribute('class', iconClass);
-    i.setAttribute('text-anchor', 'middle');
-    i.setAttribute('dominant-baseline', 'central');
-    return i;
-}
-
-/**
- * Build a horizontal pipeline diagram (CI/CD). Returns the <svg> root.
- * @param {string} title
- * @param {{label:string, icon:string}[]} steps
- */
 export function buildPipelineSvg(title, steps) {
     const W = 920;
     const H = 160;
-    const padding = 40;
+    const padding = 20;
     const stepW = (W - padding * 2) / steps.length;
-    const nodeR = 34;
+    const boxW = 86;
+    const boxH = 50;
 
     const svg = svgEl('svg', {
         viewBox: `0 0 ${W} ${H}`,
@@ -104,10 +90,9 @@ export function buildPipelineSvg(title, steps) {
 
         // Edge to next node (animated flow via stroke-dashoffset).
         if (i < steps.length - 1) {
-            const x1 = cx + nodeR;
-            const x2 = cx + stepW - nodeR;
+            const nextCx = padding + stepW * (i + 1) + stepW / 2;
             const edge = svgEl('line', {
-                x1, y1: cy, x2, y2: cy,
+                x1: cx + boxW / 2, y1: cy, x2: nextCx - boxW / 2, y2: cy,
                 class: `arch-edge arch-accent-${ACCENTS[(i + 1) % ACCENTS.length]}`
             });
             svg.appendChild(edge);
@@ -120,18 +105,25 @@ export function buildPipelineSvg(title, steps) {
             'aria-label': step.label
         });
 
-        const circle = svgEl('circle', { cx, cy, r: nodeR, class: 'arch-node-circle' });
-        const icon = fontAwesomeGlyph(step.icon);
-        icon.setAttribute('x', cx);
-        icon.setAttribute('y', cy - 2);
-        icon.setAttribute('class', `${step.icon} arch-node-icon`);
+        const rect = svgEl('rect', {
+            x: cx - boxW / 2, y: cy - boxH / 2,
+            width: boxW, height: boxH, rx: 12,
+            class: 'arch-node-rect',
+            fill: 'var(--surface-3)'
+        });
+
+        const foreign = svgEl('foreignObject', {
+            x: cx - 15, y: cy - 20, width: 30, height: 30
+        });
+        foreign.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; width:100%; height:100%;"><i class="${step.icon}" style="color:var(--text-muted); font-size:20px;"></i></div>`;
+
         const label = svgEl('text', {
-            x: cx, y: cy + nodeR + 16, 'text-anchor': 'middle', class: 'arch-node-label'
+            x: cx, y: cy + boxH / 2 - 8, 'text-anchor': 'middle', class: 'arch-node-label', style: 'font-size: 11px;'
         });
         label.textContent = step.label;
 
-        g.appendChild(circle);
-        g.appendChild(icon);
+        g.appendChild(rect);
+        g.appendChild(foreign);
         g.appendChild(label);
         svg.appendChild(g);
     });
@@ -139,19 +131,16 @@ export function buildPipelineSvg(title, steps) {
     return svg;
 }
 
-/**
- * Build a vertical layered infrastructure diagram (cloud). Returns the <svg> root.
- * @param {string} title
- * @param {{title:string, boxes:{label:string, icon:string}[]}[]} layers
- */
 function buildCloudSvg(title, layers) {
-    const rowH = 78;
+    const rowH = 96;
     const top = 36;
     const H = top + layers.length * rowH + 16;
     const W = 920;
-    const boxW = 120;
-    const boxH = 52;
-    const gap = 24;
+    const boxW = 130;
+    const boxH = 56;
+    const gap = 30;
+    const titleWidth = 180;
+    const availableW = W - titleWidth;
 
     const svg = svgEl('svg', {
         viewBox: `0 0 ${W} ${H}`,
@@ -163,6 +152,8 @@ function buildCloudSvg(title, layers) {
     layers.forEach((layer, li) => {
         const y = top + li * rowH;
         const accent = ACCENTS[li % ACCENTS.length];
+        const totalW = layer.boxes.length * boxW + (layer.boxes.length - 1) * gap;
+        const startX = titleWidth + (availableW - totalW) / 2;
 
         // Layer title.
         const titleEl = svgEl('text', {
@@ -173,16 +164,14 @@ function buildCloudSvg(title, layers) {
 
         // Connector arrow from previous layer.
         if (li > 0) {
-            const prevY = top + (li - 1) * rowH + boxH;
+            const prevY = top + (li - 1) * rowH + boxH + 16;
+            const centerX = titleWidth + availableW / 2;
             const arrow = svgEl('line', {
-                x1: 150, y1: prevY, x2: 150, y2: y,
+                x1: centerX, y1: prevY, x2: centerX, y2: y - 16,
                 class: `arch-edge arch-accent-${accent}`
             });
             svg.appendChild(arrow);
         }
-
-        const totalW = layer.boxes.length * boxW + (layer.boxes.length - 1) * gap;
-        const startX = 150 + (600 - totalW) / 2;
 
         layer.boxes.forEach((box, bi) => {
             const x = startX + bi * (boxW + gap);
@@ -193,19 +182,19 @@ function buildCloudSvg(title, layers) {
                 'aria-label': box.label
             });
             const rect = svgEl('rect', {
-                x, y, width: boxW, height: boxH, rx: 10, class: 'arch-node-rect'
+                x, y, width: boxW, height: boxH, rx: 12, class: 'arch-node-rect', fill: 'var(--surface-3)'
             });
-            const icon = fontAwesomeGlyph(box.icon);
-            icon.setAttribute('x', x + 20);
-            icon.setAttribute('y', y + boxH / 2 - 2);
-            icon.setAttribute('class', `${box.icon} arch-node-icon arch-node-icon-sm`);
+            const foreign = svgEl('foreignObject', {
+                x: x + 10, y: y + boxH/2 - 10, width: 20, height: 20
+            });
+            foreign.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; width:100%; height:100%;"><i class="${box.icon}" style="color:var(--text-muted); font-size:16px;"></i></div>`;
             const label = svgEl('text', {
-                x: x + boxW / 2 + 14, y: y + boxH / 2,
-                'text-anchor': 'middle', 'dominant-baseline': 'central', class: 'arch-node-label'
+                x: x + boxW / 2 + 10, y: y + boxH / 2,
+                'text-anchor': 'middle', 'dominant-baseline': 'central', class: 'arch-node-label', style: 'font-size: 11px;'
             });
             label.textContent = box.label;
             g.appendChild(rect);
-            g.appendChild(icon);
+            g.appendChild(foreign);
             g.appendChild(label);
             svg.appendChild(g);
         });

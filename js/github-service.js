@@ -15,7 +15,7 @@
 import { CONFIG } from './config.js';
 import { mapUserStats, selectFeaturedRepos, resolveStats } from './github-model.js';
 
-export const GH_CACHE_KEY = 'gh:ritooraj01';
+export const GH_CACHE_KEY = 'gh:ritooraj01:v3';
 const USER_URL = `${CONFIG.githubApiBase}/users/${CONFIG.githubUsername}`;
 const REPOS_URL = `${CONFIG.githubApiBase}/users/${CONFIG.githubUsername}/repos?per_page=100&sort=updated`;
 

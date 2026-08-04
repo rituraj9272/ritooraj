@@ -9,11 +9,11 @@ export const CONFIG = {
     githubTimeoutMs: 5000,
     githubCacheTtlMs: 15 * 60 * 1000,
     featuredRepos: [
+        "HandbookForge",
+        "AWS-Cloud-Cost",
         "alb-observability-automation",
         "rabbitmq-production-monitoring",
-        "multi-vpc-cloudwatch-centralized-monitoring",
-        "AWS-Cloud-Cost",
-        "assistant-ai"
+        "multi-vpc-cloudwatch-centralized-monitoring"
     ],
     fallbackStats: {           // GitHubViewModel used on failure (Requirement 4.3)
         publicRepoCount: 12,
@@ -25,7 +25,7 @@ export const CONFIG = {
     formspreeEnabled: true,
     formTimeoutMs: 10000,
     contactEmail: "singh.ritooraj@gmail.com",
-    resumePath: "RES/resume.pdf"
+    resumePath: "RES/Rituraj_Singh_Resume.pdf"
 };
 
 export default CONFIG;

@@ -1,8 +1,6 @@
 // ===========================
-// Pipeline Canvas Animation (CI/CD Flow) — particle background.
-// Feature-detected + desktop-gated + reduced-motion aware (Requirement 10.2,
-// 13.3, 14.3). A failure or unsupported environment degrades silently: the
-// canvas stays hidden and the underlying content remains visible/navigable.
+// Dynamic Particle Network Background
+// Feature-detected + desktop-gated + reduced-motion aware
 // ===========================
 
 import { prefersReducedMotion } from './reduced-motion.js';
@@ -12,10 +10,8 @@ export function initBackgroundCanvas() {
         const canvas = globalThis.document.getElementById('pipelineCanvas');
         if (!canvas) return;
         const ctx = canvas.getContext && canvas.getContext('2d');
-        if (!ctx) return; // unsupported -> degrade (10.2)
+        if (!ctx) return;
 
-        // Skip the animation loop entirely under reduced motion (13.3). The
-        // canvas is simply left blank/static; content is unaffected.
         if (prefersReducedMotion()) return;
 
         let running = true;
@@ -30,89 +26,76 @@ export function initBackgroundCanvas() {
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        // Pipeline particles
         class Particle {
             constructor() {
-                this.reset();
-            }
-
-            reset() {
                 this.x = Math.random() * canvas.width;
-                this.y = -10;
-                this.speed = Math.random() * 2 + 1;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
                 this.size = Math.random() * 2 + 1;
-                this.opacity = Math.random() * 0.5 + 0.3;
+                this.color = Math.random() > 0.5 ? 'rgba(0, 217, 255, 0.7)' : 'rgba(123, 47, 247, 0.7)';
             }
 
             update() {
-                this.y += this.speed;
-                if (this.y > canvas.height) {
-                    this.reset();
-                }
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off edges
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
             }
 
             draw() {
-                ctx.fillStyle = `rgba(0, 217, 255, ${this.opacity})`;
-                ctx.fillRect(this.x, this.y, this.size, this.size);
-            }
-        }
-
-        // Connection lines
-        class Connection {
-            constructor() {
-                this.x1 = Math.random() * canvas.width;
-                this.y1 = Math.random() * canvas.height;
-                this.x2 = Math.random() * canvas.width;
-                this.y2 = Math.random() * canvas.height;
-                this.opacity = Math.random() * 0.3;
-                this.fadeDirection = Math.random() > 0.5 ? 1 : -1;
-            }
-
-            update() {
-                this.opacity += this.fadeDirection * 0.01;
-                if (this.opacity <= 0 || this.opacity >= 0.3) {
-                    this.fadeDirection *= -1;
-                }
-            }
-
-            draw() {
-                ctx.strokeStyle = `rgba(123, 47, 247, ${this.opacity})`;
-                ctx.lineWidth = 1;
+                ctx.fillStyle = this.color;
                 ctx.beginPath();
-                ctx.moveTo(this.x1, this.y1);
-                ctx.lineTo(this.x2, this.y2);
-                ctx.stroke();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
 
-        const particles = Array.from({ length: 50 }, () => new Particle());
-        const connections = Array.from({ length: 5 }, () => new Connection());
+        const particles = Array.from({ length: 80 }, () => new Particle());
 
         function animateCanvas() {
             if (!running) {
-                requestAnimationFrame(animateCanvas); // pause when tab hidden (14.3)
+                requestAnimationFrame(animateCanvas);
                 return;
             }
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Subtle fade effect instead of clearRect
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.2)'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Draw connections
-            connections.forEach(connection => {
-                connection.update();
-                connection.draw();
-            });
-
-            // Draw particles
+            // Draw and update particles
             particles.forEach(particle => {
                 particle.update();
                 particle.draw();
             });
+
+            // Draw connections
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 120) {
+                        const opacity = 1 - (distance / 120);
+                        ctx.strokeStyle = `rgba(0, 217, 255, ${opacity * 0.5})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
 
             requestAnimationFrame(animateCanvas);
         }
 
         animateCanvas();
     } catch (_err) {
-        // Degrade silently; the page stays visible and navigable (10.2).
+        // Degrade silently
     }
 }
 
